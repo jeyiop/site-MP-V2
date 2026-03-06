@@ -41,6 +41,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Images (trop lourdes pour GitHub - servies en local)
-public/image/
+# Galerie media (trop lourde pour GitHub)
+public/image/asset-divers/
+public/image/cosmetique/
+public/image/logo-template/
+public/image/classic/
+public/image/cybertech/
+public/image/pharma/
+public/image/kraft/
 public/studio-3d-test.html
