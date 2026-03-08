@@ -1,6 +1,6 @@
 {
   "imageOverrides": {
-    "header-logo": "/image/selecta/logo/logo-A.png",
+    "header-logo": "/api/media/serve?path=logo%2020206%20multipoles%2FIMG_1135.PNG",
     "hero-0": "/api/media/serve?path=header%2Fad31d6de-698d-4d50-a880-7a12f559d333.png",
     "hero-1": "/image/selecta/hero/hero-07.png",
     "hero-2": "/api/media/serve?path=Cosmetique%2F20_Gemini_Generated_Image_nl0elnl0elnl0eln.png",
@@ -14,7 +14,8 @@
     "vitrine-v1": "/api/media/serve?path=Base%20de%20donn%C3%A9e%20photo%20reel%2FPLV%2FSOL%2FSEBA-MED%20x2.jpg",
     "vitrine-v2": "/api/media/serve?path=Base%20de%20donn%C3%A9e%20photo%20reel%2FPLV%2FCOMPTOIR%2FINNOXA-ESSENTIEL_FACE.jpg",
     "vitrine-v3": "/api/media/serve?path=header%2F2026-02-06%2013.15.58.jpg",
-    "vitrine-v4": "/image/selecta/hero/hero-04.jpg"
+    "vitrine-v4": "/image/selecta/hero/hero-04.jpg",
+    "b4-logo": "/image/selecta/logo/logo-multipoles-transparent.png"
   },
   "textOverrides": {
     "hero-title-6": "MULTIPÔLES                        G.I.E"
@@ -31,7 +32,7 @@
       "y": 0
     },
     "header-logo": {
-      "scale": 1,
+      "scale": 1.2,
       "x": 0,
       "y": 0
     },
@@ -61,6 +62,11 @@
       "y": 0
     },
     "vitrine-v2": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "b4h-hero-0": {
       "scale": 1,
       "x": 0,
       "y": 0

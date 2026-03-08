@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { StructuredData } from "../components/StructuredData";
 import { EditorWrapper } from "../components/EditorWrapper";
+import { MainWrapper } from "../components/MainWrapper";
 import { defaultMetadata, organizationSchema } from "../lib/seo";
 
 const figtree = Figtree({
@@ -64,9 +65,9 @@ export default function RootLayout({
       <body data-typo="c" className={`${figtree.variable} ${redHatMono.variable} ${manrope.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} ${sora.variable} antialiased`}>
         <EditorWrapper>
           <Header />
-          <main className="min-h-screen pt-[5.5rem] md:pt-[6rem] scroll-mt-[5.5rem] md:scroll-mt-[6rem]">
+          <MainWrapper>
             {children}
-          </main>
+          </MainWrapper>
           <Footer />
         </EditorWrapper>
       </body>

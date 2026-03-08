@@ -326,7 +326,7 @@ function SlideDivider({ layoutKey, cardWidth, setHeroLayout }: {
   );
 }
 
-export default function Brouillon() {
+export default function Brouillon1() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [solutionOrder, setSolutionOrder] = useState([0, 1, 2, 3]);

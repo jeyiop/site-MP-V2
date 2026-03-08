@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect, useLayoutEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useEditor } from '@/components/EditorWrapper';
@@ -12,7 +12,8 @@ const IMAGE_GALLERY = [
   { category: 'Vitrine', images: ['/image/selecta/vitrine/vitrine-ilv-01.jpg','/image/selecta/vitrine/vitrine-ilv-02.jpg','/image/selecta/vitrine/vitrine-packaging-01.jpg','/image/selecta/vitrine/vitrine-packaging-02.jpg','/image/selecta/vitrine/vitrine-packaging-03.jpg','/image/selecta/vitrine/vitrine-packaging-04.jpg','/image/selecta/vitrine/vitrine-plv-comptoir-01.jpg','/image/selecta/vitrine/vitrine-plv-comptoir-02.jpg','/image/selecta/vitrine/vitrine-plv-comptoir-03.jpg','/image/selecta/vitrine/vitrine-plv-lineaire-01.jpg','/image/selecta/vitrine/vitrine-plv-sol-01.jpg','/image/selecta/vitrine/vitrine-plv-sol-02.jpg'] },
   { category: 'Réalisations', images: ['/image/realisations/realisations-01.webp','/image/realisations/realisations-02.webp','/image/realisations/realisations-03.webp','/image/realisations/realisations-04.webp'] },
   { category: 'Divers', images: ['/image/slider-live-kraft/kraft-gamme-01.jpg','/image/slider-live-kraft/kraft-gamme-02.jpg','/image/slider-live-kraft/kraft-gamme-03.jpg','/image/003ab1236756873.68f226d5e8204.webp','/image/2a5c5c211072581.671be4b87df2e.webp','/image/950e4c236909363.68f623758ca51 copy.webp'] },
-  { category: 'Logos', images: ['/image/selecta/logo/logo-A.png','/image/selecta/logo/logo-B.png','/image/selecta/logo/logo-C.png','/image/selecta/logo/logo-X.png','/image/selecta/logo/logo-blanc-transparent.png','/image/selecta/logo/logo-final.png','/image/selecta/logo/logo-navy-transparent.png','/image/selecta/logo/logo-original-transparent.png','/image/selecta/logo/logo-transparent.png','/image/selecta/logo/logo-white-v2.jpg','/image/selecta/logo/logo-white-v3.jpg'] },
+  { category: 'Logos', images: ['/image/selecta/logo/logo-multipoles-v2-header.png','/image/selecta/logo/logo-multipoles-transparent.png','/image/selecta/logo/logo-A.png','/image/selecta/logo/logo-B.png','/image/selecta/logo/logo-C.png','/image/selecta/logo/logo-X.png','/image/selecta/logo/logo-blanc-transparent.png','/image/selecta/logo/logo-final.png','/image/selecta/logo/logo-navy-transparent.png','/image/selecta/logo/logo-original-transparent.png','/image/selecta/logo/logo-transparent.png','/image/selecta/logo/logo-white-v2.jpg','/image/selecta/logo/logo-white-v3.jpg'] },
+  { category: 'Logo Templates', images: ['/image/logo-template/logo-multipoles-neon-transparent.png','/image/logo-template/Gemini_Generated_Image_a8mgbaa8mgbaa8mg.png','/image/logo-template/Gemini_Generated_Image_msu5u7msu5u7msu5.png','/image/logo-template/logo A.png','/image/logo-template/logo b.png','/image/logo-template/logo c.png','/image/logo-template/logo x.png','/image/logo-template/Gemini_Generated_Image_c77ma9c77ma9c77m.jpg','/image/logo-template/Gemini_Generated_Image_c77ma9c77ma9c77m (1).jpg'] },
 ];
 
 interface EditableImageProps {
@@ -23,6 +24,7 @@ interface EditableImageProps {
 }
 
 function resizeImage(file: File, maxWidth: number, quality: number): Promise<string> {
+  const isPng = file.type === 'image/png';
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -34,8 +36,12 @@ function resizeImage(file: File, maxWidth: number, quality: number): Promise<str
         canvas.width = w; canvas.height = h;
         const ctx = canvas.getContext('2d');
         if (!ctx) return reject(new Error('no ctx'));
+        if (!isPng) {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
+        }
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', quality));
+        resolve(isPng ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', quality));
       };
       img.onerror = reject;
       img.src = e.target?.result as string;
@@ -46,15 +52,22 @@ function resizeImage(file: File, maxWidth: number, quality: number): Promise<str
 }
 
 function ImgThumb({ src, label, onClick }: { src: string; label: string; onClick: () => void }) {
+  const isPng = label.toLowerCase().endsWith('.png') || src.includes('image/png');
+  const thumbBg = isPng
+    ? '#000B58'
+    : '#f9fafb';
   return (
-    <button onClick={onClick} style={{ border: '2px solid #e5e7eb', borderRadius: '10px', overflow: 'hidden', cursor: 'pointer', background: '#f9fafb', padding: 0, transition: 'border-color 0.15s, transform 0.15s' }}
+    <button onClick={onClick} style={{ border: '2px solid #e5e7eb', borderRadius: '10px', overflow: 'hidden', cursor: 'pointer', background: thumbBg, padding: 0, transition: 'border-color 0.15s, transform 0.15s' }}
       onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#000B58'; e.currentTarget.style.transform = 'scale(1.03)'; }}
       onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.transform = 'scale(1)'; }}>
       <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={label} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} loading="lazy" />
       </div>
-      <div style={{ padding: '4px 6px', fontSize: '10px', color: '#666', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</div>
+      <div style={{ padding: '4px 6px', fontSize: '10px', color: isPng ? '#aef' : '#666', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {isPng && <span style={{ fontSize: '8px', background: '#22c55e', color: '#fff', borderRadius: '3px', padding: '0 3px', marginRight: '3px' }}>PNG</span>}
+        {label}
+      </div>
     </button>
   );
 }
@@ -120,33 +133,160 @@ function ImageGalleryModal({ onSelect, onClose, onUpload }: { onSelect: (p: stri
   );
 }
 
+// ─── Toolbar flottante (portal) ──────────────────────────────
+const POSITIONS = [
+  { label: '↖', x: -50, y: -50 }, { label: '↑', x: 0, y: -50 }, { label: '↗', x: 50, y: -50 },
+  { label: '←', x: -50, y:   0 }, { label: '·', x: 0, y:   0 }, { label: '→', x: 50, y:   0 },
+  { label: '↙', x: -50, y:  50 }, { label: '↓', x: 0, y:  50 }, { label: '↘', x: 50, y:  50 },
+];
+
+function FloatingToolbar({ containerRef, fill, objectFit, transform, hasTransform, onChangeImage, onToggleFit, onReset, onDeselect, setImageTransform, editorKey }: {
+  containerRef: React.RefObject<HTMLDivElement | null>; fill?: boolean; objectFit: string;
+  transform: { scale: number; x: number; y: number }; hasTransform: boolean;
+  onChangeImage: () => void; onToggleFit: () => void; onReset: () => void; onDeselect: () => void;
+  setImageTransform: (k: string, v: any) => void; editorKey: string;
+}) {
+  const [rect, setRect] = useState<DOMRect | null>(null);
+  const [showPos, setShowPos] = useState(false);
+
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => setRect(el.getBoundingClientRect());
+    update();
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update); };
+  }, [containerRef]);
+
+  if (!rect || typeof document === 'undefined') return null;
+
+  const toolbarH = 40;
+  const gap = 6;
+  const spaceAbove = rect.top;
+  const top = spaceAbove > toolbarH + gap
+    ? rect.top + window.scrollY - toolbarH - gap
+    : rect.bottom + window.scrollY + gap;
+  const left = Math.max(8, Math.min(rect.left, window.innerWidth - 420));
+
+  const btnStyle = (active = false): React.CSSProperties => ({
+    height: 30, padding: '0 10px', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12,
+    fontWeight: 700, display: 'flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap',
+    backgroundColor: active ? '#000B58' : 'rgba(255,255,255,0.12)',
+    color: active ? '#fff' : 'rgba(255,255,255,0.85)',
+    transition: 'all 0.15s',
+  });
+  const sep: React.CSSProperties = { width: 1, alignSelf: 'stretch', backgroundColor: 'rgba(255,255,255,0.2)', margin: '4px 2px' };
+
+  return createPortal(
+    <div
+      onPointerDown={e => e.stopPropagation()}
+      style={{ position: 'absolute', top, left, zIndex: 999999, display: 'flex', alignItems: 'center', gap: 4,
+        backgroundColor: 'rgba(0,11,88,0.92)', backdropFilter: 'blur(12px)', borderRadius: 10,
+        padding: '5px 8px', boxShadow: '0 8px 32px rgba(0,0,0,0.45)', border: '1px solid rgba(255,255,255,0.15)',
+        height: toolbarH, userSelect: 'none' }}
+    >
+      {/* Changer image */}
+      <button style={btnStyle()} onClick={onChangeImage} title="Changer l'image">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Changer
+      </button>
+
+      <div style={sep} />
+
+      {/* Cover / Contain */}
+      {fill && (
+        <>
+          <button style={btnStyle(objectFit === 'cover')} onClick={() => { if (objectFit !== 'cover') onToggleFit(); }} title="Cover — remplit le cadre">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="0" y="0" width="24" height="24" rx="2"/></svg>
+            Cover
+          </button>
+          <button style={btnStyle(objectFit === 'contain')} onClick={() => { if (objectFit !== 'contain') onToggleFit(); }} title="Contain — image entière visible">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1" fill="currentColor" opacity={0.5}/></svg>
+            Contain
+          </button>
+          <div style={sep} />
+        </>
+      )}
+
+      {/* Position grid (9 points) — toggle */}
+      {fill && (
+        <>
+          <div style={{ position: 'relative' }}>
+            <button style={{ ...btnStyle(), paddingLeft: 8, paddingRight: 8 }} onClick={() => setShowPos(p => !p)} title="Position de l'image">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+              Position
+            </button>
+            {showPos && (
+              <div style={{ position: 'absolute', bottom: 38, left: 0, backgroundColor: 'rgba(0,11,88,0.95)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: 6, display: 'grid', gridTemplateColumns: 'repeat(3, 24px)', gap: 3, zIndex: 10 }}>
+                {POSITIONS.map(pos => {
+                  const active = Math.round(transform.x) === pos.x && Math.round(transform.y) === pos.y;
+                  return (
+                    <button key={pos.label} onClick={e => { e.stopPropagation(); setImageTransform(editorKey, { ...transform, x: pos.x, y: pos.y }); setShowPos(false); }}
+                      style={{ width: 24, height: 24, borderRadius: 4, border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700,
+                        backgroundColor: active ? '#ffd580' : 'rgba(255,255,255,0.12)', color: active ? '#000B58' : '#fff' }}
+                    >{pos.label}</button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <div style={sep} />
+        </>
+      )}
+
+      {/* Zoom info + reset */}
+      {hasTransform && (
+        <>
+          <span style={{ color: '#ffd580', fontSize: 11, fontWeight: 700, padding: '0 4px' }}>{Math.round(transform.scale * 100)}%</span>
+          <button style={{ ...btnStyle(), color: '#ffd580', paddingLeft: 8, paddingRight: 8 }} onClick={onReset} title="Réinitialiser zoom/position (R)">↺</button>
+          <div style={sep} />
+        </>
+      )}
+
+      {/* Fermer */}
+      <button style={{ ...btnStyle(), paddingLeft: 8, paddingRight: 8, color: 'rgba(255,255,255,0.5)' }} onClick={onDeselect} title="Désélectionner (Échap)">✕</button>
+    </div>,
+    document.body
+  );
+}
+
 // ─── Composant principal ─────────────────────────────────────
 export function EditableImage({ editorKey, src, alt, fill, className, width, height, priority, sizes, compact }: EditableImageProps) {
   const { editorMode, imageOverrides, setImageOverride, imageTransforms, setImageTransform } = useEditor();
   const inputRef     = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [showGallery, setShowGallery] = useState(false);
+  const [selected, setSelected]       = useState(false);
+  const [hovered, setHovered]         = useState(false);
 
   // Transform state
   const transform    = (imageTransforms ?? {})[editorKey] ?? { scale: 1, x: 0, y: 0 };
   const hasTransform = transform.scale !== 1 || transform.x !== 0 || transform.y !== 0;
-
-  // Keep a ref to current transform (avoids stale closures in event listeners)
   const transformRef = useRef(transform);
   useLayoutEffect(() => { transformRef.current = transform; }, [transform]);
 
   // Drag tracking
   const dragRef = useRef<{ startX: number; startY: number; startTx: number; startTy: number; moved: boolean } | null>(null);
 
-  // ── Non-passive wheel listener (zoom) ──────────────────────
+  // ── Escape key + click outside ────────────────────────────
   useEffect(() => {
-    if (!editorMode || !fill) return;
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelected(false); if (e.key === 'r' || e.key === 'R') setImageTransform(editorKey, { scale: 1, x: 0, y: 0 }); };
+    const onClickOutside = (e: MouseEvent) => { if (containerRef.current && !containerRef.current.contains(e.target as Node)) setSelected(false); };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onClickOutside);
+    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onClickOutside); };
+  }, [selected, editorKey, setImageTransform]);
+
+  // ── Wheel zoom (non-passive) ──────────────────────────────
+  useEffect(() => {
+    if (!editorMode || !fill || !selected) return;
     const el = containerRef.current;
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const t = transformRef.current;
-      // Normalise selon deltaMode : 0=pixel, 1=line(×30), 2=page(×300)
       const raw = e.deltaMode === 1 ? e.deltaY * 30 : e.deltaMode === 2 ? e.deltaY * 300 : e.deltaY;
       const delta = -raw * 0.002;
       const newScale = Math.max(1, Math.min(4, t.scale + delta));
@@ -156,17 +296,20 @@ export function EditableImage({ editorKey, src, alt, fill, className, width, hei
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
-  }, [editorMode, fill, editorKey, setImageTransform]);
+  }, [editorMode, fill, selected, editorKey, setImageTransform]);
 
-  // ── Pointer events (pan + click detection) ────────────────
+  // ── Pointer events ────────────────────────────────────────
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!editorMode) return;
+    e.stopPropagation();
+    if (!selected) { setSelected(true); return; }
+    if (!fill) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     dragRef.current = { startX: e.clientX, startY: e.clientY, startTx: transform.x, startTy: transform.y, moved: false };
   };
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const d = dragRef.current;
-    if (!d || !fill) return;
+    if (!d || !fill || !selected) return;
     const hasMoved = Math.abs(e.clientX - d.startX) > 4 || Math.abs(e.clientY - d.startY) > 4;
     if (!hasMoved) return;
     d.moved = true;
@@ -179,29 +322,29 @@ export function EditableImage({ editorKey, src, alt, fill, className, width, hei
   const onPointerUp = () => {
     const d = dragRef.current;
     dragRef.current = null;
-    if (d && !d.moved && editorMode) setShowGallery(true);  // click = gallery
+    if (d && !d.moved && selected) setShowGallery(true);
   };
 
   // ── File upload ───────────────────────────────────────────
-  const handleGallerySelect = (path: string) => { setImageOverride(editorKey, path); setShowGallery(false); };
-  const handleFileUpload    = () => { setShowGallery(false); inputRef.current?.click(); };
-  const handleFileChange    = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGallerySelect = useCallback((path: string) => { setImageOverride(editorKey, path); setShowGallery(false); setSelected(false); }, [editorKey, setImageOverride]);
+  const handleFileUpload    = useCallback(() => { setShowGallery(false); inputRef.current?.click(); }, []);
+  const handleFileChange    = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     try { setImageOverride(editorKey, await resizeImage(file, 1920, 0.85)); } catch (err) { console.error(err); }
     e.target.value = '';
-  };
+  }, [editorKey, setImageOverride]);
 
   // ── Object-fit override ───────────────────────────────────
   const fitKey = `${editorKey}__fit`;
   const fitOverride = ((imageTransforms ?? {})[fitKey] as any)?.fit as 'cover' | 'contain' | undefined;
   const objectFit = fitOverride ?? 'cover';
-  const toggleFit = () => {
+  const toggleFit = useCallback(() => {
     const next = objectFit === 'cover' ? 'contain' : 'cover';
     setImageTransform(fitKey, { scale: 1, x: 0, y: 0, fit: next } as any);
-  };
+  }, [objectFit, fitKey, setImageTransform]);
 
-  // ── Image style (zoom + pan) ──────────────────────────────
+  // ── Image style ───────────────────────────────────────────
   const imgStyle: React.CSSProperties = (editorMode || hasTransform) ? {
     objectFit: objectFit,
     objectPosition: `${50 + transform.x}% ${50 + transform.y}%`,
@@ -214,83 +357,64 @@ export function EditableImage({ editorKey, src, alt, fill, className, width, hei
   const displaySrc = override || src;
   const isDataUrl  = override?.startsWith('data:');
 
+  // ── Cursor ───────────────────────────────────────────────
+  const cursor = !editorMode ? undefined : !selected ? 'pointer' : fill && hasTransform ? 'move' : fill ? 'crosshair' : 'pointer';
+
   const wrapperStyle: React.CSSProperties = {
     ...(fill ? { position: 'relative', width: '100%', height: '100%', overflow: 'hidden' } : { display: 'inline-block', overflow: 'hidden' }),
-    ...(editorMode && fill ? { cursor: hasTransform ? 'move' : 'crosshair' } : {}),
+    cursor,
+    // Selection ring
+    ...(editorMode && selected ? { outline: '2px solid #000B58', outlineOffset: '0px', zIndex: 40 } : {}),
+    ...(editorMode && hovered && !selected ? { outline: '2px solid rgba(0,11,88,0.4)', outlineOffset: '0px' } : {}),
   };
 
-  // ── Zoom badge (visible seulement si transform actif) ─────
-  const zoomBadge = editorMode && fill && hasTransform ? (
-    <div style={{ position: 'absolute', bottom: '8px', right: '8px', zIndex: 50, display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: '6px', padding: '2px 8px', pointerEvents: 'none' }}>
-      <span style={{ color: '#ffd580', fontSize: '10px', fontWeight: 700 }}>{Math.round(transform.scale * 100)}%</span>
+  // ── Hover hint (minimal, non-selected) ───────────────────
+  const hoverHint = editorMode && hovered && !selected && fill ? (
+    <div style={{ position: 'absolute', inset: 0, zIndex: 41, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+      <div style={{ backgroundColor: 'rgba(0,11,88,0.75)', borderRadius: 8, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span style={{ color: '#fff', fontSize: 11, fontWeight: 700 }}>Cliquer pour éditer</span>
+      </div>
     </div>
   ) : null;
 
-  // ── Reset button (double-clic sur le badge) → reset ───────
-  // Exposé via un bouton séparé en haut à droite
-  const resetBtn = editorMode && fill && hasTransform ? (
-    <button
-      style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 51, backgroundColor: 'rgba(0,0,0,0.6)', border: 'none', borderRadius: '6px', color: '#ffd580', fontSize: '11px', fontWeight: 700, cursor: 'pointer', padding: '2px 7px', backdropFilter: 'blur(4px)' }}
-      onPointerDown={e => { e.stopPropagation(); }}
-      onClick={e => { e.stopPropagation(); setImageTransform(editorKey, { scale: 1, x: 0, y: 0 }); }}
-      title="Réinitialiser zoom/recadrage"
-    >↺</button>
-  ) : null;
-
-  // ── Panneau options éditeur ───────────────────────────────
-  const POSITIONS = [
-    { label: '↖', x: -50, y: -50 }, { label: '↑', x: 0, y: -50 }, { label: '↗', x: 50, y: -50 },
-    { label: '←', x: -50, y:   0 }, { label: '·', x: 0, y:   0 }, { label: '→', x: 50, y:   0 },
-    { label: '↙', x: -50, y:  50 }, { label: '↓', x: 0, y:  50 }, { label: '↘', x: 50, y:  50 },
-  ];
-  const hint = editorMode && fill && !compact ? (
-    <div
-      onPointerDown={e => e.stopPropagation()}
-      style={{ position: 'absolute', bottom: '8px', left: '8px', zIndex: 52, display: 'flex', flexDirection: 'column', gap: '4px' }}
-    >
-      {/* Grille position 3×3 */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 20px)', gap: '2px', backgroundColor: 'rgba(0,0,0,0.55)', borderRadius: '7px', padding: '5px', backdropFilter: 'blur(4px)' }}>
-        {POSITIONS.map(pos => {
-          const active = Math.round(transform.x) === pos.x && Math.round(transform.y) === pos.y;
-          return (
-            <button
-              key={pos.label}
-              title={`Positionner : ${pos.label}`}
-              onClick={e => { e.stopPropagation(); setImageTransform(editorKey, { ...transform, x: pos.x, y: pos.y }); }}
-              style={{ width: '20px', height: '20px', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '11px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: active ? '#ffd580' : 'rgba(255,255,255,0.15)', color: active ? '#000B58' : '#fff', transition: 'all 0.1s' }}
-            >{pos.label}</button>
-          );
-        })}
-      </div>
-      {/* Cover / Contain toggle */}
-      <button
-        onClick={e => { e.stopPropagation(); toggleFit(); }}
-        title="Basculer Cover / Contain"
-        style={{ backgroundColor: 'rgba(0,0,0,0.55)', border: 'none', borderRadius: '6px', padding: '3px 7px', cursor: 'pointer', backdropFilter: 'blur(4px)', color: objectFit === 'cover' ? '#ffd580' : '#aef', fontSize: '10px', fontWeight: 700, textAlign: 'center' }}
-      >
-        {objectFit === 'cover' ? '⬛ Cover' : '⬜ Contain'}
-      </button>
-      {/* Hint zoom */}
-      <div style={{ backgroundColor: 'rgba(0,0,0,0.45)', borderRadius: '6px', padding: '2px 6px', pointerEvents: 'none' }}>
-        <span style={{ color: '#fff', fontSize: '9px', fontWeight: 600 }}>molette=zoom · glisser=recadrer · clic=changer</span>
-      </div>
+  // ── Selected drag hint ────────────────────────────────────
+  const dragHint = editorMode && selected && fill && !hasTransform ? (
+    <div style={{ position: 'absolute', bottom: 6, left: '50%', transform: 'translateX(-50%)', zIndex: 41, pointerEvents: 'none' }}>
+      <span style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'rgba(255,255,255,0.7)', fontSize: 9, fontWeight: 600, borderRadius: 4, padding: '2px 7px', whiteSpace: 'nowrap' }}>
+        molette = zoom · glisser = recadrer
+      </span>
     </div>
   ) : null;
 
   const commonChildren = (
     <>
-      {editorMode && <EditorOverlay />}
-      {zoomBadge}
-      {resetBtn}
-      {hint}
+      {hoverHint}
+      {dragHint}
       <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
     </>
   );
 
+  const toolbar = editorMode && selected ? (
+    <FloatingToolbar
+      containerRef={containerRef} fill={fill} objectFit={objectFit}
+      transform={transform} hasTransform={hasTransform}
+      onChangeImage={() => setShowGallery(true)}
+      onToggleFit={toggleFit}
+      onReset={() => setImageTransform(editorKey, { scale: 1, x: 0, y: 0 })}
+      onDeselect={() => setSelected(false)}
+      setImageTransform={setImageTransform} editorKey={editorKey}
+    />
+  ) : null;
+
   if (isDataUrl) {
     return (
       <>
-        <div ref={containerRef} style={wrapperStyle} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={() => { dragRef.current = null; }}>
+        <div ref={containerRef} style={wrapperStyle}
+          onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
+          onPointerLeave={() => { dragRef.current = null; setHovered(false); }}
+          onPointerEnter={() => editorMode && setHovered(true)}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={override} alt={alt} className={className}
             style={{ ...(fill ? { position: 'absolute', inset: 0, width: '100%', height: '100%' } : { width, height }), ...imgStyle }}
@@ -298,6 +422,7 @@ export function EditableImage({ editorKey, src, alt, fill, className, width, hei
           />
           {commonChildren}
         </div>
+        {toolbar}
         {showGallery && typeof document !== 'undefined' && createPortal(<ImageGalleryModal onSelect={handleGallerySelect} onClose={() => setShowGallery(false)} onUpload={handleFileUpload} />, document.body)}
       </>
     );
@@ -305,30 +430,19 @@ export function EditableImage({ editorKey, src, alt, fill, className, width, hei
 
   return (
     <>
-      <div ref={containerRef} style={wrapperStyle} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={() => { dragRef.current = null; }}>
+      <div ref={containerRef} style={wrapperStyle}
+        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
+        onPointerLeave={() => { dragRef.current = null; setHovered(false); }}
+        onPointerEnter={() => editorMode && setHovered(true)}
+      >
         <Image src={displaySrc} alt={alt} fill={fill} className={className}
           width={!fill ? width : undefined} height={!fill ? height : undefined}
           priority={priority} sizes={sizes} style={imgStyle}
         />
         {commonChildren}
       </div>
+      {toolbar}
       {showGallery && typeof document !== 'undefined' && createPortal(<ImageGalleryModal onSelect={handleGallerySelect} onClose={() => setShowGallery(false)} onUpload={handleFileUpload} />, document.body)}
     </>
-  );
-}
-
-// ─── Overlay crayon (hover) ──────────────────────────────────
-function EditorOverlay() {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      style={{ position: 'absolute', inset: 0, zIndex: 43, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: hovered ? 'rgba(0,11,88,0.2)' : 'transparent', transition: 'background-color 0.2s', pointerEvents: 'none' }}
-    >
-      <div style={{ opacity: hovered ? 1 : 0, transition: 'opacity 0.2s', backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '9999px', padding: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#000B58" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-        </svg>
-      </div>
-    </div>
   );
 }

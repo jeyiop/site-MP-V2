@@ -21,7 +21,7 @@ const baseSolutionCategories = [
   { slug: 'plv', title: 'PLV', icon: Lightbulb, description: "PLV de comptoir et PLV de sol: conception structurelle, prototypage et fabrication série.", link: '/solutions#plv' },
   { slug: 'packaging', title: 'Packaging', icon: Package, description: 'Etuis, coffrets, sleeves et calages avec contraintes logistiques et retail intégrées.', link: '/solutions#packaging' },
   { slug: 'print', title: 'Print', icon: Printer, description: "Impression offset/numérique, dorure, vernis sélectif, gaufrage, découpe et façonnage.", link: '/solutions#print' },
-  { slug: 'digital', title: 'Devis 3D Studio', icon: Play, description: 'Configuration 3D de votre projet et transmission directe au bureau d'études pour chiffrage.', link: '/simulateur' },
+  { slug: 'digital', title: 'Devis 3D Studio', icon: Play, description: "Configuration 3D de votre projet et transmission directe au bureau d'études pour chiffrage.", link: '/simulateur' },
 ];
 
 export default function RealisationsPage() {
