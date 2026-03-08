@@ -29,8 +29,8 @@ const fallbackCarouselItems: CarouselSlide[] = [
   },
   {
     id: '2',
-    title: "Un partenaire technique à l’écoute et réactif",
-    subtitle: "Accompagnement bureau d’études, prototype, validation et industrialisation",
+    title: "Un partenaire technique à l'écoute et réactif",
+    subtitle: "Accompagnement bureau d'études, prototype, validation et industrialisation",
     imageUrl: "/image/selecta/hero/hero-02.jpg",
     videoUrl: undefined,
     ctaText: "Lancer Devis 3D Studio",
@@ -105,7 +105,7 @@ const fallbackRealisations: Realisation[] = [
   {
     id: 'fallback-1',
     title: 'Corner Beauté Premium',
-    description: 'Installation PLV complète pour le lancement d’une nouvelle gamme de soins visage.',
+    description: "Installation PLV complète pour le lancement d'une nouvelle gamme de soins visage.",
     client: 'LuxeSkin',
     category: 'PLV',
     images: ['/image/realisations/realisations-01.webp'],
@@ -171,14 +171,14 @@ const heroPanelContent: Record<string, { badge: string; details: string; points:
   '2': {
     badge: 'Méthode projet',
     details:
-      'Une organisation complète, de l’étude du besoin à la mise en place en point de vente, avec suivi opérationnel.',
+      "Une organisation complète, de l'étude du besoin à la mise en place en point de vente, avec suivi opérationnel.",
     points: ['Brief + étude technique', 'Prototypage et tests', 'Production, co-packing, logistique'],
     metric: 'Respect des engagements qualité/délai',
   },
   '3': {
     badge: 'Devis 3D Studio',
     details:
-      'Accélérez le cadrage de votre projet grâce à une configuration 3D claire transmise au bureau d’études.',
+      "Accélérez le cadrage de votre projet grâce à une configuration 3D claire transmise au bureau d'études.",
     points: ['Paramètres dimensions', 'Capacité et implantation produit', 'Demande de devis structurée'],
     metric: 'Du concept à la faisabilité en quelques clics',
   },
@@ -194,7 +194,7 @@ const heroTextGroups = [
   },
   {
     title: "Devis en ligne Studio 3D",
-    subtitle: "Pré-configurez votre projet, illustrez le besoin et transmettez un brief clair au bureau d’études",
+    subtitle: "Pré-configurez votre projet, illustrez le besoin et transmettez un brief clair au bureau d'études",
     ctaText: "Ouvrir Devis 3D Studio",
     ctaLink: "/simulateur",
     panelKey: '3',
@@ -278,31 +278,31 @@ const baseSolutionCategories = [
     slug: 'digital',
     title: 'Devis 3D Studio',
     icon: Play,
-    description: 'Configuration 3D de votre projet et transmission directe au bureau d’études pour chiffrage.',
+    description: "Configuration 3D de votre projet et transmission directe au bureau d'études pour chiffrage.",
     link: '/simulateur',
   },
 ];
 
 const faqItems = [
   {
-    question: 'Quelle est votre expertise sectorielle ?',
+    question: 'Quelle est votre expertise sectorielle ?',
     answer:
       'Nous intervenons sur les secteurs cosmétique, dermocosmétique et pharmacie avec des PLV comptoir/sol et des packagings techniques adaptés aux contraintes retail.',
   },
   {
-    question: 'Proposez-vous des solutions sur-mesure ?',
+    question: 'Proposez-vous des solutions sur-mesure ?',
     answer:
-      'Oui. Nous partons de votre brief pour définir dimensions, matériaux, process d’impression, finitions et conditionnement, puis nous validons via prototype avant production série.',
+      "Oui. Nous partons de votre brief pour définir dimensions, matériaux, process d'impression, finitions et conditionnement, puis nous validons via prototype avant production série.",
   },
   {
-    question: 'Comment l’innovation 3D intervient-elle dans vos projets ?',
+    question: "Comment l'innovation 3D intervient-elle dans vos projets ?",
     answer:
       'Le Devis 3D Studio permet de configurer les volumes et la capacité produit en amont. Votre configuration est transmise pour étude technique et devis.',
   },
   {
-    question: 'Êtes-vous engagés dans une démarche éco-responsable ?',
+    question: 'Êtes-vous engagés dans une démarche éco-responsable ?',
     answer:
-      'Nous privilégions les matières recyclables, l’optimisation des développés, et des choix de fabrication limitant la matière et les transports inutiles.',
+      "Nous privilégions les matières recyclables, l'optimisation des développés, et des choix de fabrication limitant la matière et les transports inutiles.",
   },
 ];
 
@@ -326,7 +326,7 @@ function SlideDivider({ layoutKey, cardWidth, setHeroLayout }: {
   );
 }
 
-export default function Home() {
+export default function Brouillon() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const vitrineScrollRef = useRef<HTMLDivElement | null>(null);
@@ -648,7 +648,7 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold text-[#000B58]">Réalisations Multi-Pôles</h2>
               <p className="mt-3 max-w-3xl text-base text-[#000B58]/70">
                 Une sélection de réalisations issues de vos dossiers: PLV, ILV et packaging,
-                présentée dans un format homogène pour lecture claire par secteur d’intervention.
+                présentée dans un format homogène pour lecture claire par secteur d'intervention.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -743,7 +743,7 @@ export default function Home() {
               className="mt-4 text-lg leading-relaxed text-[#000B58]/70"
             >
               Parcourez nos réalisations en contexte point de vente: PLV de comptoir, PLV de sol, packaging primaire/secondaire
-              et opérations de conditionnement prêtes à l’expédition.
+              et opérations de conditionnement prêtes à l'expédition.
             </motion.p>
           </div>
 
@@ -793,7 +793,7 @@ export default function Home() {
             </span>
             <h2 className="mt-6 text-4xl font-bold text-[#000B58]">Pourquoi choisir Multi-Pôles&nbsp;?</h2>
             <p className="mt-3 text-lg text-[#000B58]/70">
-              Découvrez en un clin d’œil les réponses aux questions que nos clients nous posent le plus souvent à propos de notre approche et de notre accompagnement.
+              Découvrez en un clin d'œil les réponses aux questions que nos clients nous posent le plus souvent à propos de notre approche et de notre accompagnement.
             </p>
           </motion.div>
 
