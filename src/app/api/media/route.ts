@@ -4,7 +4,7 @@ import path from 'path';
 
 const MEDIA_ROOT = path.join('E:', 'Dropbox', '1\uD83D\uDCBC_MULTIPOLES', 'Media');
 
-const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg']);
+const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif']);
 
 function listDir(dirPath: string) {
   try {

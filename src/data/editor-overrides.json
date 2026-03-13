@@ -15,7 +15,9 @@
     "vitrine-v2": "/api/media/serve?path=Base%20de%20donn%C3%A9e%20photo%20reel%2FPLV%2FCOMPTOIR%2FINNOXA-ESSENTIEL_FACE.jpg",
     "vitrine-v3": "/api/media/serve?path=header%2F2026-02-06%2013.15.58.jpg",
     "vitrine-v4": "/image/selecta/hero/hero-04.jpg",
-    "b4-logo": "/image/selecta/logo/logo-multipoles-transparent.png"
+    "b4-logo": "/api/media/serve?path=Gemini_Generated_Image_8xkgbr8xkgbr8xkg.png",
+    "b4h-hero-0": "/api/media/serve?path=Gemini_Generated_Image_463nof463nof463n.png",
+    "b4h-hero-1": "/api/media/serve?path=logo%2020206%20multipoles%2Flogo%20mp%20blanc%20.png"
   },
   "textOverrides": {
     "hero-title-6": "MULTIPÔLES                        G.I.E"
@@ -70,7 +72,49 @@
       "scale": 1,
       "x": 0,
       "y": 0
+    },
+    "b4h-hero-2__fit": {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+      "fit": "cover"
+    },
+    "b4h-hero-2": {
+      "scale": 1,
+      "x": 0,
+      "y": 50
+    },
+    "b4-logo": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "b4h-hero-1": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
     }
   },
-  "heroLayouts": {}
+  "heroLayouts": {},
+  "imageFilters": {},
+  "frameSizes": {},
+  "freeBlocks": [
+    {
+      "id": "8b88bdbd-b331-4e03-b599-3a7ee1055f2e",
+      "type": "image",
+      "x": 101,
+      "y": 999,
+      "w": 347,
+      "h": 201,
+      "fontSize": 14,
+      "fontWeight": 600,
+      "textColor": "#000B58",
+      "textAlign": "left",
+      "bgColor": "#e8edf5",
+      "borderRadius": 8,
+      "padding": 16,
+      "opacity": 1,
+      "imageUrl": "/api/media/serve?path=packcolors%201.jpg"
+    }
+  ]
 }

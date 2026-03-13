@@ -70,13 +70,13 @@ export default function Brouillon4() {
     <div className="flex flex-col min-h-screen bg-white">
 
       {/* ── HEADER BLEU ─────────────────────────────────────── */}
-      <header style={{ backgroundColor: '#000B58' }} className={`fixed top-0 left-0 w-full z-[99999] transition-shadow duration-300 ${isScrolled ? 'shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4)]' : ''}`}>
+      <header style={{ backgroundColor: '#021035' }} className={`fixed top-0 left-0 w-full z-[99999] transition-shadow duration-300 ${isScrolled ? 'shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4)]' : ''}`}>
         <div className="flex items-stretch h-[5.5rem] md:h-[6rem] gap-4 md:gap-6">
 
           {/* Logo — pleine hauteur bord à bord */}
-          <div className="relative self-center h-[83px] md:h-[91px] w-[202px] md:w-[260px] shrink-0" style={{ backgroundColor: '#000B58' }}>
+          <div className="relative self-center h-[83px] md:h-[91px] w-[202px] md:w-[260px] shrink-0" style={{ backgroundColor: '#021035' }}>
             {!editorMode && <Link href="/" className="absolute inset-0 z-20" aria-label="Accueil" />}
-            <EditableImage editorKey="b4-logo" src="/image/selecta/logo/logo-multipoles-v2-header.png" alt="Multi-Pôles" fill className="object-contain object-center" priority />
+            <EditableImage editorKey="b4-logo" src="/image/selecta/logo/logo fon bleu.jpg" alt="Multi-Pôles" fill className="object-cover object-center" priority />
           </div>
 
           {/* Slogan */}
@@ -88,21 +88,28 @@ export default function Brouillon4() {
 
           <span className="hidden md:block h-8 w-px bg-white/15 shrink-0 self-center" />
 
-          {/* Nav */}
-          <nav className="hidden md:flex items-center gap-1 ml-2">
-            {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/10 transition-colors">
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+          {/* Nav centre + Téléphone */}
+          <div className="hidden md:flex flex-1 items-center justify-center gap-6">
+            <nav className="flex items-center gap-1">
+              {NAV_LINKS.map(l => (
+                <Link key={l.href} href={l.href} className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/10 transition-colors">
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
+            <a
+              href="tel:+33143911771"
+              className="flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-white hover:border-white/50 hover:bg-white/10 transition-colors no-underline shrink-0 h-10"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" />
+              </svg>
+              <span className="text-base font-bold tracking-wide">01 43 91 17 71</span>
+            </a>
+          </div>
 
-          <div className="ml-auto flex items-center gap-3 pr-4 md:pr-10">
-            {/* CTA */}
-            <Link href="/contact" className="hidden md:inline-flex items-center rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white/20 transition-colors">
-              Nous contacter
-            </Link>
-            {/* Mobile burger */}
+          {/* Mobile burger */}
+          <div className="ml-auto flex items-center pr-4 md:pr-10">
             <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors">
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -116,7 +123,7 @@ export default function Brouillon4() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              style={{ backgroundColor: '#000B58', borderTop: '1px solid rgba(255,255,255,0.1)' }}
+              style={{ backgroundColor: '#021035', borderTop: '1px solid rgba(255,255,255,0.1)' }}
               className="overflow-hidden"
             >
               <div className="px-4 py-4 flex flex-col gap-1">

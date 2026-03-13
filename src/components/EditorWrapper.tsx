@@ -1,25 +1,64 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
+import dynamic from 'next/dynamic';
 
 // ─── Types ───────────────────────────────────────────────────
 export interface ImageTransform { scale: number; x: number; y: number }
+
+export interface ImageFilter {
+  brightness: number;   // défaut 1, range 0.5-1.5
+  contrast: number;     // défaut 1, range 0.5-1.5
+  saturation: number;   // défaut 1, range 0-2
+  temperature: number;  // défaut 0, range -50 à 50 (négatif = froid, positif = chaud)
+  preset: string;       // 'normal' | 'vivid' | 'matte' | etc
+}
+export const DEFAULT_FILTER: ImageFilter = { brightness: 1, contrast: 1, saturation: 1, temperature: 0, preset: 'normal' };
+
+export interface FrameSize { w: number; h: number; }
+
+export interface FreeBlock {
+  id: string;
+  type: 'text' | 'image' | 'mixed';
+  x: number; y: number; w: number; h: number;
+  text?: string;
+  fontSize?: number;
+  fontWeight?: number;
+  textColor?: string;
+  textAlign?: 'left' | 'center' | 'right';
+  imageUrl?: string;
+  bgColor?: string;
+  borderRadius?: number;
+  padding?: number;
+  opacity?: number;
+}
 
 interface EditorContextType {
   editorMode: boolean;
   imageOverrides: Record<string, string>;
   textOverrides: Record<string, string>;
   imageTransforms: Record<string, ImageTransform>;
-  heroLayouts: Record<string, number>; // cardWidth per slide key
+  heroLayouts: Record<string, number>;
+  imageFilters: Record<string, ImageFilter>;
+  frameSizes: Record<string, FrameSize>;
+  freeBlocks: FreeBlock[];
   toggleEditor: () => void;
   setImageOverride: (key: string, dataURL: string) => void;
   setTextOverride: (key: string, value: string) => void;
   setImageTransform: (key: string, t: ImageTransform) => void;
   setHeroLayout: (key: string, cardWidth: number) => void;
+  setImageFilter: (key: string, f: ImageFilter) => void;
+  setFrameSize: (key: string, s: FrameSize | null) => void;
+  addFreeBlock: (block: FreeBlock) => void;
+  updateFreeBlock: (id: string, updates: Partial<FreeBlock>) => void;
+  deleteFreeBlock: (id: string) => void;
   resetOverrides: () => void;
   resetTextOverrides: () => void;
   resetImageTransforms: () => void;
   resetHeroLayouts: () => void;
+  resetImageFilters: () => void;
+  resetFrameSizes: () => void;
+  resetFreeBlocks: () => void;
 }
 
 const EditorContext = createContext<EditorContextType | null>(null);
@@ -28,6 +67,9 @@ const IMAGE_STORAGE_KEY     = 'mp-editor-overrides';
 const TEXT_STORAGE_KEY      = 'mp-editor-text-overrides';
 const TRANSFORM_STORAGE_KEY = 'mp-editor-transforms';
 const LAYOUT_STORAGE_KEY    = 'mp-editor-layouts';
+const FILTER_STORAGE_KEY    = 'mp-editor-filters';
+const FRAME_STORAGE_KEY     = 'mp-editor-frames';
+const BLOCK_STORAGE_KEY     = 'mp-editor-blocks';
 
 export function useEditor() {
   const ctx = useContext(EditorContext);
@@ -35,12 +77,20 @@ export function useEditor() {
   return ctx;
 }
 
+// ─── Dynamic import du block layer ──────────────────────────
+const EditorBlockLayer = dynamic(
+  () => import('./EditorBlockLayer').then(m => ({ default: m.EditorBlockLayer })),
+  { ssr: false }
+);
+
 // ─── Toggle Button ──────────────────────────────────────────
 function EditorToggle() {
   const {
     editorMode, toggleEditor,
     resetOverrides, resetTextOverrides, resetImageTransforms, resetHeroLayouts,
+    resetImageFilters, resetFrameSizes, resetFreeBlocks,
     imageOverrides, textOverrides, imageTransforms, heroLayouts,
+    imageFilters, frameSizes, freeBlocks,
   } = useEditor();
 
   const importRef = useRef<HTMLInputElement>(null);
@@ -52,6 +102,12 @@ function EditorToggle() {
     return t.scale !== 1 || t.x !== 0 || t.y !== 0;
   }).length;
   const layoutCount     = Object.keys(heroLayouts).length;
+  const filterCount     = Object.keys(imageFilters).filter(k => {
+    const f = imageFilters[k];
+    return f.brightness !== 1 || f.contrast !== 1 || f.saturation !== 1 || f.temperature !== 0;
+  }).length;
+  const frameCount      = Object.keys(frameSizes).length;
+  const blockCount      = freeBlocks.length;
 
   // ── Export JSON ────────────────────────────────────────────
   const handleExport = useCallback(() => {
@@ -61,6 +117,9 @@ function EditorToggle() {
       textOverrides,
       imageTransforms,
       heroLayouts,
+      imageFilters,
+      frameSizes,
+      freeBlocks,
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
@@ -69,7 +128,7 @@ function EditorToggle() {
     a.download = `mp-editor-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-  }, [imageOverrides, textOverrides, imageTransforms, heroLayouts]);
+  }, [imageOverrides, textOverrides, imageTransforms, heroLayouts, imageFilters, frameSizes, freeBlocks]);
 
   // ── Import JSON ────────────────────────────────────────────
   const handleImportFile = useCallback(
@@ -93,6 +152,15 @@ function EditorToggle() {
           if (parsed.heroLayouts && typeof parsed.heroLayouts === 'object') {
             try { localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(parsed.heroLayouts)); } catch { /* ignore */ }
           }
+          if (parsed.imageFilters && typeof parsed.imageFilters === 'object') {
+            try { localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(parsed.imageFilters)); } catch { /* ignore */ }
+          }
+          if (parsed.frameSizes && typeof parsed.frameSizes === 'object') {
+            try { localStorage.setItem(FRAME_STORAGE_KEY, JSON.stringify(parsed.frameSizes)); } catch { /* ignore */ }
+          }
+          if (parsed.freeBlocks && Array.isArray(parsed.freeBlocks)) {
+            try { localStorage.setItem(BLOCK_STORAGE_KEY, JSON.stringify(parsed.freeBlocks)); } catch { /* ignore */ }
+          }
         } catch {
           alert('Fichier JSON invalide.');
         }
@@ -110,6 +178,27 @@ function EditorToggle() {
 
   return (
     <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 99999, display: 'flex', flexDirection: 'column' as const, alignItems: 'flex-end', gap: '8px' }}>
+
+      {/* Reset blocs libres */}
+      {editorMode && blockCount > 0 && (
+        <button onClick={resetFreeBlocks} style={{ ...btnBase, backgroundColor: '#b45309', color: '#fff' }}>
+          Reset blocs ({blockCount})
+        </button>
+      )}
+
+      {/* Reset cadres */}
+      {editorMode && frameCount > 0 && (
+        <button onClick={resetFrameSizes} style={{ ...btnBase, backgroundColor: '#0e7490', color: '#fff' }}>
+          Reset cadres ({frameCount})
+        </button>
+      )}
+
+      {/* Reset filtres */}
+      {editorMode && filterCount > 0 && (
+        <button onClick={resetImageFilters} style={{ ...btnBase, backgroundColor: '#9333ea', color: '#fff' }}>
+          Reset filtres ({filterCount})
+        </button>
+      )}
 
       {/* Reset layout */}
       {editorMode && layoutCount > 0 && (
@@ -144,7 +233,7 @@ function EditorToggle() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={async () => {
-              const payload = { imageOverrides, textOverrides, imageTransforms, heroLayouts };
+              const payload = { imageOverrides, textOverrides, imageTransforms, heroLayouts, imageFilters, frameSizes, freeBlocks };
               const res = await fetch('/api/studio/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
               if (res.ok) alert('✅ Modifications sauvegardées dans le code !');
               else alert('❌ Erreur lors de la sauvegarde.');
@@ -187,6 +276,16 @@ function EditorToggle() {
             {transformCount} zoom
           </span>
         )}
+        {filterCount > 0 && (
+          <span style={{ backgroundColor: '#9333ea', color: '#fff', borderRadius: '9999px', padding: '1px 7px', fontSize: '11px', fontWeight: 700, lineHeight: '18px', marginLeft: '2px' }}>
+            {filterCount} filtre
+          </span>
+        )}
+        {blockCount > 0 && (
+          <span style={{ backgroundColor: '#b45309', color: '#fff', borderRadius: '9999px', padding: '1px 7px', fontSize: '11px', fontWeight: 700, lineHeight: '18px', marginLeft: '2px' }}>
+            {blockCount} bloc
+          </span>
+        )}
       </button>
     </div>
   );
@@ -199,6 +298,9 @@ export function EditorWrapper({ children }: { children: ReactNode }) {
   const [textOverrides, setTextOverrides]       = useState<Record<string, string>>({});
   const [imageTransforms, setImageTransformsState] = useState<Record<string, ImageTransform>>({});
   const [heroLayouts, setHeroLayoutsState]      = useState<Record<string, number>>({});
+  const [imageFilters, setImageFiltersState]    = useState<Record<string, ImageFilter>>({});
+  const [frameSizes, setFrameSizesState]        = useState<Record<string, FrameSize>>({});
+  const [freeBlocks, setFreeBlocksState]        = useState<FreeBlock[]>([]);
 
   // ── Load from server JSON (saved overrides) then localStorage ─
   useEffect(() => {
@@ -210,14 +312,20 @@ export function EditorWrapper({ children }: { children: ReactNode }) {
           if (data.textOverrides)   setTextOverrides(data.textOverrides);
           if (data.imageTransforms) setImageTransformsState(data.imageTransforms);
           if (data.heroLayouts)     setHeroLayoutsState(data.heroLayouts);
+          if (data.imageFilters)    setImageFiltersState(data.imageFilters);
+          if (data.frameSizes)      setFrameSizesState(data.frameSizes);
+          if (data.freeBlocks)      setFreeBlocksState(data.freeBlocks);
         }
       })
       .catch(() => {
         // Fallback to localStorage
-        try { const s = localStorage.getItem(IMAGE_STORAGE_KEY);     if (s) setImageOverrides(JSON.parse(s));     } catch { /* ignore */ }
-        try { const s = localStorage.getItem(TEXT_STORAGE_KEY);      if (s) setTextOverrides(JSON.parse(s));      } catch { /* ignore */ }
-        try { const s = localStorage.getItem(TRANSFORM_STORAGE_KEY); if (s) setImageTransformsState(JSON.parse(s)); } catch { /* ignore */ }
-        try { const s = localStorage.getItem(LAYOUT_STORAGE_KEY);    if (s) setHeroLayoutsState(JSON.parse(s));    } catch { /* ignore */ }
+        try { const s = localStorage.getItem(IMAGE_STORAGE_KEY);     if (s) setImageOverrides(JSON.parse(s));        } catch { /* ignore */ }
+        try { const s = localStorage.getItem(TEXT_STORAGE_KEY);      if (s) setTextOverrides(JSON.parse(s));         } catch { /* ignore */ }
+        try { const s = localStorage.getItem(TRANSFORM_STORAGE_KEY); if (s) setImageTransformsState(JSON.parse(s));  } catch { /* ignore */ }
+        try { const s = localStorage.getItem(LAYOUT_STORAGE_KEY);    if (s) setHeroLayoutsState(JSON.parse(s));      } catch { /* ignore */ }
+        try { const s = localStorage.getItem(FILTER_STORAGE_KEY);    if (s) setImageFiltersState(JSON.parse(s));     } catch { /* ignore */ }
+        try { const s = localStorage.getItem(FRAME_STORAGE_KEY);     if (s) setFrameSizesState(JSON.parse(s));       } catch { /* ignore */ }
+        try { const s = localStorage.getItem(BLOCK_STORAGE_KEY);     if (s) setFreeBlocksState(JSON.parse(s));       } catch { /* ignore */ }
       });
   }, []);
 
@@ -253,24 +361,66 @@ export function EditorWrapper({ children }: { children: ReactNode }) {
     } catch { /* ignore */ }
   }, [heroLayouts]);
 
-  const toggleEditor       = useCallback(() => setEditorMode((p) => !p), []);
-  const setImageOverride   = useCallback((key: string, dataURL: string) => setImageOverrides((p) => ({ ...p, [key]: dataURL })), []);
-  const setTextOverride    = useCallback((key: string, value: string) => setTextOverrides((p) => ({ ...p, [key]: value })), []);
-  const setImageTransform  = useCallback((key: string, t: ImageTransform) => setImageTransformsState((p) => ({ ...p, [key]: t })), []);
-  const setHeroLayout      = useCallback((key: string, cardWidth: number) => setHeroLayoutsState((p) => ({ ...p, [key]: cardWidth })), []);
-  const resetOverrides     = useCallback(() => setImageOverrides({}), []);
-  const resetTextOverrides = useCallback(() => setTextOverrides({}), []);
+  // ── Persist imageFilters ───────────────────────────────────
+  useEffect(() => {
+    try {
+      if (Object.keys(imageFilters).length > 0) localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(imageFilters));
+      else localStorage.removeItem(FILTER_STORAGE_KEY);
+    } catch { /* ignore */ }
+  }, [imageFilters]);
+
+  // ── Persist frameSizes ─────────────────────────────────────
+  useEffect(() => {
+    try {
+      if (Object.keys(frameSizes).length > 0) localStorage.setItem(FRAME_STORAGE_KEY, JSON.stringify(frameSizes));
+      else localStorage.removeItem(FRAME_STORAGE_KEY);
+    } catch { /* ignore */ }
+  }, [frameSizes]);
+
+  // ── Persist freeBlocks ─────────────────────────────────────
+  useEffect(() => {
+    try {
+      if (freeBlocks.length > 0) localStorage.setItem(BLOCK_STORAGE_KEY, JSON.stringify(freeBlocks));
+      else localStorage.removeItem(BLOCK_STORAGE_KEY);
+    } catch { /* ignore */ }
+  }, [freeBlocks]);
+
+  const toggleEditor         = useCallback(() => setEditorMode((p) => !p), []);
+  const setImageOverride     = useCallback((key: string, dataURL: string) => setImageOverrides((p) => ({ ...p, [key]: dataURL })), []);
+  const setTextOverride      = useCallback((key: string, value: string) => setTextOverrides((p) => ({ ...p, [key]: value })), []);
+  const setImageTransform    = useCallback((key: string, t: ImageTransform) => setImageTransformsState((p) => ({ ...p, [key]: t })), []);
+  const setHeroLayout        = useCallback((key: string, cardWidth: number) => setHeroLayoutsState((p) => ({ ...p, [key]: cardWidth })), []);
+  const setImageFilter       = useCallback((key: string, f: ImageFilter) => setImageFiltersState((p) => ({ ...p, [key]: f })), []);
+  const setFrameSize         = useCallback((key: string, s: FrameSize | null) => {
+    if (s === null) {
+      setFrameSizesState((p) => { const n = { ...p }; delete n[key]; return n; });
+    } else {
+      setFrameSizesState((p) => ({ ...p, [key]: s }));
+    }
+  }, []);
+  const addFreeBlock         = useCallback((block: FreeBlock) => setFreeBlocksState((p) => [...p, block]), []);
+  const updateFreeBlock      = useCallback((id: string, updates: Partial<FreeBlock>) => setFreeBlocksState((p) => p.map(b => b.id === id ? { ...b, ...updates } : b)), []);
+  const deleteFreeBlock      = useCallback((id: string) => setFreeBlocksState((p) => p.filter(b => b.id !== id)), []);
+  const resetOverrides       = useCallback(() => setImageOverrides({}), []);
+  const resetTextOverrides   = useCallback(() => setTextOverrides({}), []);
   const resetImageTransforms = useCallback(() => setImageTransformsState({}), []);
-  const resetHeroLayouts   = useCallback(() => setHeroLayoutsState({}), []);
+  const resetHeroLayouts     = useCallback(() => setHeroLayoutsState({}), []);
+  const resetImageFilters    = useCallback(() => setImageFiltersState({}), []);
+  const resetFrameSizes      = useCallback(() => setFrameSizesState({}), []);
+  const resetFreeBlocks      = useCallback(() => setFreeBlocksState([]), []);
 
   return (
     <EditorContext.Provider value={{
       editorMode, imageOverrides, textOverrides, imageTransforms, heroLayouts,
+      imageFilters, frameSizes, freeBlocks,
       toggleEditor, setImageOverride, setTextOverride, setImageTransform, setHeroLayout,
+      setImageFilter, setFrameSize, addFreeBlock, updateFreeBlock, deleteFreeBlock,
       resetOverrides, resetTextOverrides, resetImageTransforms, resetHeroLayouts,
+      resetImageFilters, resetFrameSizes, resetFreeBlocks,
     }}>
       {children}
       <EditorToggle />
+      <EditorBlockLayer />
     </EditorContext.Provider>
   );
 }

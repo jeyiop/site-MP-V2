@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { EditableImage } from '@/components/EditableImage';
@@ -17,9 +18,13 @@ import { Button } from '@/components/ui/button';
 
 const Header = () => {
   const { editorMode } = useEditor();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+
+  // Brouillons using the global header keep it always visible (no hide-on-scroll)
+  const alwaysVisible = pathname.startsWith('/brouillon');
 
   const lastScrollY = useRef(0);
   const scrollRevealTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -28,6 +33,12 @@ const Header = () => {
     const handleScroll = () => {
       const currentY = window.scrollY;
       setIsScrolled(currentY > 10);
+
+      if (alwaysVisible) {
+        lastScrollY.current = currentY;
+        return;
+      }
+
       const isNearTop = currentY < 80;
       const isScrollingDown = currentY > lastScrollY.current + 2;
 
@@ -64,7 +75,7 @@ const Header = () => {
         clearTimeout(scrollRevealTimeout.current);
       }
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, alwaysVisible]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {

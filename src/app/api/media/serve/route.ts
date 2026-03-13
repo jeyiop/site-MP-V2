@@ -11,6 +11,7 @@ const MIME: Record<string, string> = {
   '.webp': 'image/webp',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
+  '.avif': 'image/avif',
 };
 
 export async function GET(request: Request) {
