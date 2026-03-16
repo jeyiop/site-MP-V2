@@ -203,22 +203,22 @@ const Header = () => {
             className="md:hidden bg-white shadow-lg absolute top-full left-0 right-0 py-4"
           >
             <div className="container mx-auto px-4 flex flex-col space-y-4">
-              <Link href="/" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-medium">
+              <Link href="/" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Accueil
               </Link>
-              <Link href="/solutions" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-medium">
+              <Link href="/solutions" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Solutions
               </Link>
-              <Link href="/realisations" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-medium">
+              <Link href="/realisations" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Réalisations
               </Link>
-              <Link href="/apropos" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-medium">
+              <Link href="/apropos" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 À propos
               </Link>
-              <Link href="/blog" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-medium">
+              <Link href="/blog" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Blog
               </Link>
-              <Link href="/contact" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-medium">
+              <Link href="/contact" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Contact
               </Link>
               <Link
