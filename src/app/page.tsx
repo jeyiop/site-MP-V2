@@ -387,6 +387,14 @@ export default function Home() {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const vitrineScrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Hauteur du fond bleu entre categories et vitrine (editable)
+  const [blueBgHeight, setBlueBgHeight] = useState(88);
+  const blueDrag = useRef<{ startY: number; startH: number } | null>(null);
+  useEffect(() => {
+    try { const v = localStorage.getItem('mp-blue-bg-height'); if (v) setBlueBgHeight(Number(v)); } catch {}
+  }, []);
+  useEffect(() => { localStorage.setItem('mp-blue-bg-height', String(blueBgHeight)); }, [blueBgHeight]);
+
   const presentationVideoUrl = process.env.NEXT_PUBLIC_PRESENTATION_VIDEO_URL;
   const presentationVideoPoster = process.env.NEXT_PUBLIC_PRESENTATION_VIDEO_POSTER;
   const presentationVideoType = process.env.NEXT_PUBLIC_PRESENTATION_VIDEO_TYPE ?? 'video/mp4';
@@ -677,8 +685,19 @@ export default function Home() {
 
       {/* Vitrine — grille 4x4 images editables */}
       <section className="relative bg-white pt-44 pb-20">
-        {/* Fond bleu qui descend depuis la section categories */}
-        <div className="absolute inset-x-0 top-0 h-[88px] bg-[#000B58]" />
+        {/* Fond bleu qui descend depuis la section categories — hauteur editable */}
+        <div className="absolute inset-x-0 top-0 bg-[#000B58]" style={{ height: blueBgHeight }}>
+          {editorMode && (
+            <div
+              style={{ position: 'absolute', bottom: -6, left: 0, right: 0, height: 12, cursor: 'ns-resize', zIndex: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onPointerDown={e => { e.preventDefault(); (e.target as HTMLElement).setPointerCapture(e.pointerId); blueDrag.current = { startY: e.clientY, startH: blueBgHeight }; }}
+              onPointerMove={e => { if (!blueDrag.current) return; const dy = e.clientY - blueDrag.current.startY; setBlueBgHeight(Math.max(0, blueDrag.current.startH + dy)); }}
+              onPointerUp={() => { blueDrag.current = null; }}
+            >
+              <div style={{ width: 60, height: 4, borderRadius: 2, background: '#f59e0b' }} />
+            </div>
+          )}
+        </div>
         <div className="container relative mx-auto px-4 md:px-6 lg:px-8">
           <div className="mb-14 text-center">
             <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-[0.3em] text-[#000B58]/50">
