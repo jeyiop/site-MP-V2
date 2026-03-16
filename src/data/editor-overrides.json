@@ -1,12 +1,12 @@
 {
   "imageOverrides": {
     "header-logo": "/api/media/serve?path=logo%2020206%20multipoles%2FIMG_1135.PNG",
-    "hero-0": "/api/media/serve?path=header%2Fad31d6de-698d-4d50-a880-7a12f559d333.png",
-    "hero-1": "/image/selecta/hero/hero-07.png",
-    "hero-2": "/api/media/serve?path=Cosmetique%2F20_Gemini_Generated_Image_nl0elnl0elnl0eln.png",
-    "hero-3": "/api/media/serve?path=header%2F2026-02-09%2002.13.36.jpg",
-    "hero-4": "/api/media/serve?path=header%2Fc7426dcf-dda4-48c7-855b-feda4b725718.png",
-    "hero-5": "/api/media/serve?path=header%2Fffc02601-a99b-46f7-8701-5102aaa975b7.png",
+    "hero-0": "/api/media/serve?path=header%2Fc7426dcf-dda4-48c7-855b-feda4b725718.png",
+    "hero-1": "/api/media/serve?path=header%2Fc40e211a-9e4a-424f-8645-33467f7f8aab.png",
+    "hero-2": "/api/media/serve?path=header%2Fad31d6de-698d-4d50-a880-7a12f559d333.png",
+    "hero-3": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PACK%2004.png",
+    "hero-4": "/api/media/serve?path=IA%20IMAGE%20MP%2FMelnage%20MP%2005.png",
+    "hero-5": "/api/media/serve?path=header%2F2026-02-09%2002.13.36.jpg",
     "hero-6": "/api/media/serve?path=header%2Fb1d1174a-f0ef-415d-8f94-adc9d3e6d4cd.png",
     "solution-print": "/api/media/serve?path=header%2Fc7426dcf-dda4-48c7-855b-feda4b725718.png",
     "solution-packaging": "/image/selecta/hero/hero-07.png",
@@ -17,7 +17,10 @@
     "vitrine-v4": "/image/selecta/hero/hero-04.jpg",
     "b4-logo": "/api/media/serve?path=Gemini_Generated_Image_8xkgbr8xkgbr8xkg.png",
     "b4h-hero-0": "/api/media/serve?path=Gemini_Generated_Image_463nof463nof463n.png",
-    "b4h-hero-1": "/api/media/serve?path=logo%2020206%20multipoles%2Flogo%20mp%20blanc%20.png"
+    "b4h-hero-1": "/api/media/serve?path=logo%2020206%20multipoles%2Flogo%20mp%20blanc%20.png",
+    "sf-img-print": "/api/media/serve?path=IA%20IMAGE%20MP%2FPrint%20Chromi.png",
+    "sf-product-print": "/api/media/serve?path=IA%20IMAGE%20MP%2FPrint%20Chromi.png",
+    "sf-product-packaging": "/api/media/serve?path=IA%20IMAGE%20MP%2FPLV%20BLEU%2003.png"
   },
   "textOverrides": {
     "hero-title-6": "MULTIPÔLES                        G.I.E"
@@ -40,13 +43,13 @@
     },
     "hero-5": {
       "scale": 1,
-      "x": -3.0877192982456143,
-      "y": 50
+      "x": 0,
+      "y": 0
     },
     "hero-3": {
       "scale": 1,
-      "x": 0,
-      "y": 0
+      "x": -3.125,
+      "y": -0.29578961963303385
     },
     "solution-packaging": {
       "scale": 1,
@@ -93,28 +96,40 @@
       "scale": 1,
       "x": 0,
       "y": 0
+    },
+    "sf-bas-packaging__fit": {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+      "fit": "contain"
+    },
+    "sf-img-print": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "sf-product-packaging": {
+      "scale": 1,
+      "x": -2.750059680114586,
+      "y": 12.069189751593184
+    },
+    "sf-product-plv": {
+      "scale": 1.2,
+      "x": 50,
+      "y": 0
     }
   },
   "heroLayouts": {},
   "imageFilters": {},
-  "frameSizes": {},
-  "freeBlocks": [
-    {
-      "id": "8b88bdbd-b331-4e03-b599-3a7ee1055f2e",
-      "type": "image",
-      "x": 101,
-      "y": 999,
-      "w": 347,
-      "h": 201,
-      "fontSize": 14,
-      "fontWeight": 600,
-      "textColor": "#000B58",
-      "textAlign": "left",
-      "bgColor": "#e8edf5",
-      "borderRadius": 8,
-      "padding": 16,
-      "opacity": 1,
-      "imageUrl": "/api/media/serve?path=packcolors%201.jpg"
+  "frameSizes": {
+    "sf-bas-packaging": {
+      "w": 393.25,
+      "h": 374.40625
+    },
+    "hero-5": {
+      "w": 1072,
+      "h": 637.15625
     }
-  ]
+  },
+  "freeBlocks": []
 }
