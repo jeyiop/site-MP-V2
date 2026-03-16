@@ -621,7 +621,7 @@ export default function Home() {
         </div>
       </section>
       {/* Services Section */}
-      <section className="pt-4 pb-24 bg-[#000B58]">
+      <section className="pt-4 pb-4 bg-[#000B58]">
         <div className="w-full px-0">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
             {geminiCards.map((card, index) => {
@@ -676,8 +676,10 @@ export default function Home() {
       </section>
 
       {/* Vitrine — grille 4x4 images editables */}
-      <section className="bg-white py-20">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+      <section className="relative bg-white pt-32 pb-20">
+        {/* Fond bleu qui descend depuis la section categories */}
+        <div className="absolute inset-x-0 top-0 h-16 bg-[#000B58]" />
+        <div className="container relative mx-auto px-4 md:px-6 lg:px-8">
           <div className="mb-14 text-center">
             <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-[0.3em] text-[#000B58]/50">
               Vitrine
