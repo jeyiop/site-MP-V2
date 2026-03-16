@@ -675,77 +675,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Vitrine carousel */}
+      {/* Vitrine — grille 4x4 images editables */}
       <section className="bg-white py-20">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <span className="mb-3 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-[#000B58]/65">
-                Vitrine
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#000B58]">Réalisations Multi-Pôles</h2>
-              <p className="mt-3 max-w-3xl text-base text-[#000B58]/70">
-                Une sélection de réalisations issues de vos dossiers: PLV, ILV et packaging,
-                présentée dans un format homogène pour lecture claire par secteur d’intervention.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollVitrine('left')}
-                className="rounded-lg border border-[#000B58]/20 bg-white p-2.5 text-[#000B58] transition-colors hover:bg-[#000B58]/5"
-                aria-label="Défiler les réalisations vers la gauche"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollVitrine('right')}
-                className="rounded-lg border border-[#000B58]/20 bg-white p-2.5 text-[#000B58] transition-colors hover:bg-[#000B58]/5"
-                aria-label="Défiler les réalisations vers la droite"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+          <div className="mb-14 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-[0.3em] text-[#000B58]/50">
+              Vitrine
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#000B58]">{"Réalisations Multi-Pôles"}</h2>
+            <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-[#000B58]/20" />
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-[#000B58]/60 leading-relaxed">
+              {"Une sélection de réalisations issues de vos dossiers : PLV, ILV et packaging, présentée dans un format homogène pour lecture claire par secteur d’intervention."}
+            </p>
           </div>
-
-          <div
-            ref={vitrineScrollRef}
-            className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {vitrineItems.map((item) => (
-              <article
-                key={item.id}
-                className="min-w-[300px] max-w-[300px] snap-start rounded-2xl border border-[#000B58]/12 bg-white p-4 shadow-sm md:min-w-[360px] md:max-w-[360px]"
-              >
-                <div className="relative mb-4 overflow-hidden rounded-xl">
-                  <div className="relative aspect-[16/10] w-full">
-                    <EditableImage
-                      editorKey={`vitrine-${item.id}`}
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 768px) 90vw, 360px"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-[#000B58]">{item.title}</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={`${item.id}-${tag}`}
-                      className="rounded-md border border-[#000B58]/15 bg-[#000B58]/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#000B58]/70"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </article>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {Array.from({ length: 16 }, (_, i) => (
+              <div key={`vit-${i}`} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-[#000B58]/5">
+                <EditableImage
+                  editorKey={`vitrine-${i + 1}`}
+                  src="/image/selecta/savoir-faire/photo-packaging.png"
+                  alt={`Réalisation ${i + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
             ))}
           </div>
         </div>
