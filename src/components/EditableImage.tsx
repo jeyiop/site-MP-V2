@@ -667,11 +667,11 @@ interface EditableImageProps {
   editorKey: string; src: string; alt: string;
   fill?: boolean; className?: string;
   width?: number; height?: number; priority?: boolean; sizes?: string;
-  compact?: boolean;
+  compact?: boolean; quality?: number;
 }
 
 // ─── Composant principal ─────────────────────────────────────
-export function EditableImage({ editorKey, src, alt, fill, className, width, height, priority, sizes, compact }: EditableImageProps) {
+export function EditableImage({ editorKey, src, alt, fill, className, width, height, priority, sizes, compact, quality }: EditableImageProps) {
   const {
     editorMode, imageOverrides, setImageOverride,
     imageTransforms, setImageTransform,
@@ -894,7 +894,7 @@ export function EditableImage({ editorKey, src, alt, fill, className, width, hei
       >
         <Image src={displaySrc} alt={alt} fill={fill} className={className}
           width={!fill ? width : undefined} height={!fill ? height : undefined}
-          priority={priority} sizes={sizes} style={imgStyle}
+          priority={priority} sizes={sizes} quality={quality} style={imgStyle}
         />
         {commonChildren}
       </div>

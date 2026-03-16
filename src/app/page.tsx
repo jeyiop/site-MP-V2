@@ -499,7 +499,8 @@ export default function Home() {
                       alt={item?.title ?? 'Slide'}
                       fill
                       priority={index === 0}
-                      sizes="(max-width: 768px) 100vw, 66vw"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      quality={95}
                       className="object-cover"
                     />
                   </div>
