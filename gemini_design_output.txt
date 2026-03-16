@@ -1,0 +1,21 @@
+Voici le composant React avec Tailwind CSS, respectant le style "luxe industriel", la mise en valeur du picto et la connexion visuelle, le tout en 11 lignes de JSX.
+
+```jsx
+function CategoryBlock({ Icon, cat }) {
+  return (
+    <div
+      className="group bg-[#000B58] p-8 rounded-xl shadow-2xl text-white
+                 flex flex-col items-center justify-center space-y-6
+                 border-b-4 border-amber-500/50 hover:border-amber-400
+                 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+    >
+      <Icon className="text-7xl text-amber-300 group-hover:text-amber-200 transition-colors duration-300" />
+      <h3 className="text-2xl font-extrabold tracking-wider uppercase text-gray-100 group-hover:text-white transition-colors duration-300">
+        {cat.title}
+      </h3>
+    </div>
+  );
+}
+
+export default CategoryBlock;
+```

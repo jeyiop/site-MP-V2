@@ -1,0 +1,148 @@
+Here's the complete JSX for your premium "Nos savoir-faire" section, incorporating glassmorphism, Framer Motion animations, Tailwind CSS, and Next.js Image component as requested.
+
+This section features a 2x2 grid of cards. Each card has a full background image. On hover, a frosted glass panel (containing the icon, title, and a short description) slides upwards, revealing a longer description that was previously hidden beneath it. The animations are designed to feel premium and sophisticated.
+
+```jsx
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+
+// Data for the 'Nos savoir-faire' categories
+const savoirFaireData = [
+  {
+    id: 'plv',
+    title: 'PLV (Publicité sur Lieu de Vente)',
+    // Using Unicode characters for icons as placeholders.
+    // For a truly premium look, replace these with SVG icons from an icon library (e.g., Heroicons, Font Awesome).
+    icon: '💡', // Lightbulb icon
+    image: '/image/brouillon-ai/ai-plv.png',
+    shortDescription: 'Création et production de supports publicitaires percutants pour vos points de vente.',
+    longDescription: 'De la conception à l\'installation, nous réalisons des PLV innovantes et impactantes qui captent l\'attention et dynamisent vos ventes. Stands, displays, totems...'
+  },
+  {
+    id: 'packaging',
+    title: 'Packaging Design',
+    icon: '📦', // Package icon
+    image: '/image/brouillon-ai/ai-packaging.png',
+    shortDescription: 'Conception d\'emballages créatifs et fonctionnels qui subliment vos produits.',
+    longDescription: 'Nous transformons votre emballage en un puissant outil marketing, alliant esthétique, ergonomie et respect de l\'environnement. Cartons, étiquettes, flacons...'
+  },
+  {
+    id: 'print',
+    title: 'Print & Édition',
+    icon: '🖨️', // Printer icon
+    image: '/image/brouillon-ai/ai-print.png',
+    shortDescription: 'Impression de haute qualité pour tous vos supports de communication.',
+    longDescription: 'Brochures, catalogues, affiches, cartes de visite... Nous maîtrisons l\'art de l\'impression pour donner vie à vos idées avec une finition impeccable et des papiers premium.'
+  },
+  {
+    id: 'studio3d',
+    title: 'Devis 3D & Studio',
+    icon: '▶️', // Play icon
+    image: '/image/brouillon-ai/ai-studio3d.png',
+    shortDescription: 'Visualisation 3D réaliste pour vos projets et devis détaillés.',
+    longDescription: 'Grâce à nos modélisations 3D avancées, visualisez vos projets avant production. Obtenez des devis précis et des rendus photoréalistes pour une prise de décision éclairée.'
+  },
+];
+
+// Framer Motion variants for the glass panel animation
+const glassPanelVariants = {
+  rest: {
+    y: 0, // Initial position at the bottom
+    transition: {
+      duration: 0.5,
+      type: "spring",
+      bounce: 0.4,
+    }
+  },
+  hover: {
+    y: -80, // Slides up by 80px on hover
+    transition: {
+      duration: 0.5,
+      type: "spring",
+      bounce: 0.4,
+    }
+  }
+};
+
+// Framer Motion variants for the revealed long description text
+const longDescriptionVariants = {
+  rest: {
+    opacity: 0,
+    y: 20, // Slightly moves up from below
+    transition: {
+      duration: 0.3,
+      delay: 0, // No delay on exit
+    }
+  },
+  hover: {
+    opacity: 1,
+    y: 0, // Fully visible and in place
+    transition: {
+      delay: 0.2, // Appears after a slight delay, as glass panel slides
+      duration: 0.3,
+    }
+  }
+};
+
+export function SavoirFaireSection() {
+  return (
+    <section className="bg-[#000B58] py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Title */}
+        <h2 className="text-5xl font-extrabold text-center text-white mb-16 leading-tight">
+          Nos{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+            savoir-faire
+          </span>
+        </h2>
+
+        {/* 2x2 Grid for Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+          {savoirFaireData.map((item) => (
+            <motion.div
+              key={item.id}
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              className="relative h-[450px] overflow-hidden rounded-xl shadow-2xl group cursor-pointer"
+            >
+              {/* Background Image */}
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                priority // Mark images as priority for better loading performance
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Optimize image loading
+              />
+
+              {/* Gradient Overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+
+              {/* Content Wrapper - holds both revealed text and glass panel */}
+              <div className="absolute inset-0 z-20 text-white p-8 flex flex-col">
+                {/* Long Description (initially hidden, revealed on hover) */}
+                <motion.div
+                  variants={longDescriptionVariants}
+                  className="flex-grow flex items-center justify-center text-center px-4"
+                >
+                  <p className="text-xl leading-relaxed text-gray-200 max-w-md mx-auto">
+                    {item.longDescription}
+                  </p>
+                </motion.div>
+
+                {/* Glassmorphism Panel (slides up on hover) */}
+                <motion.div
+                  variants={glassPanelVariants}
+                  className="relative bg-white/10 backdrop-blur-lg rounded-xl p-8 flex flex-col justify-end min-h-[180px]"
+                >
+                  {/* Icon */}
+                  <div className="text-5xl mb-4 text-blue-300">
+                    {item.icon}
+                  </div>
+                  {/* Title */}
+                  <h3 className="text-3xl font-bold mb-2">{item.title}</h3>
+                  {/* Short Description */}
+                  <p className="text-lg text-gray-200">{item.shortDescription}</p>
+                </motion.div>
+              </div>

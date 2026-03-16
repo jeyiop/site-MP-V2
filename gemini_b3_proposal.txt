@@ -1,0 +1,282 @@
+Absolument ! Voici une proposition JSX complète pour une section "Nos savoir-faire" ultra premium et éditoriale, respectant toutes vos contraintes.
+
+Ce code utilise:
+*   **Next.js `Image` component** pour l'optimisation des images.
+*   **Tailwind CSS** pour le style.
+*   **Framer Motion** pour les animations d'entrée et les effets `whileHover`.
+*   **React Icons (Feather Icons)** pour les icônes.
+
+```jsx
+// components/SavoirFaireSection.jsx
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { FiLightbulb, FiPackage, FiPrinter, FiPlay } from 'react-icons/fi'; // Import des icônes
+
+// --- Framer Motion Variants ---
+
+// Variants pour le conteneur global de chaque "savoir-faire"
+const containerVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.6, 0.05, -0.01, 0.9], // Custom easing for a premium feel
+      when: "beforeChildren", // Start children animation after parent
+      staggerChildren: 0.2 // Stagger animation for children
+    }
+  }
+};
+
+// Variants pour le grand numéro
+const numberVariants = {
+  hidden: { opacity: 0, scale: 0.8, x: -50 },
+  visible: {
+    opacity: 0.1, // Subtle opacity
+    scale: 1,
+    x: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.6, 0.05, -0.01, 0.9],
+      delay: 0.1 // Slight delay for the number
+    }
+  }
+};
+
+// Variants pour le bloc de texte (icône, titre, description)
+const textBlockVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.6, 0.05, -0.01, 0.9]
+    }
+  }
+};
+
+// Variants pour l'image
+const imageVariants = {
+  hidden: { opacity: 0, scale: 0.95, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.9,
+      ease: [0.6, 0.05, -0.01, 0.9],
+      delay: 0.1 // Slight delay for image after text
+    }
+  }
+};
+
+// Variants pour l'effet de survol de l'image
+const imageHoverVariants = {
+  hover: {
+    scale: 1.03,
+    rotate: 1,
+    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)", // Stronger shadow on hover
+    transition: {
+      duration: 0.3,
+      ease: "easeOut"
+    }
+  }
+};
+
+
+export default function SavoirFaireSection() {
+  const savoirFaireItems = [
+    {
+      number: "01",
+      title: "PLV",
+      description: "Conception et fabrication de Publicité sur Lieu de Vente impactantes, personnalisées et durables, pour sublimer vos produits et capter l'attention de votre audience.",
+      image: "/image/brouillon-ai/ai-plv.png",
+      icon: FiLightbulb,
+      imageRight: true, // Image à droite, texte à gauche
+    },
+    {
+      number: "02",
+      title: "Packaging",
+      description: "Du design à la production, nous créons des emballages qui racontent une histoire, protègent vos produits et renforcent l'identité de votre marque avec élégance et innovation.",
+      image: "/image/brouillon-ai/ai-packaging.png",
+      icon: FiPackage,
+      imageRight: false, // Image à gauche, texte à droite
+    },
+    {
+      number: "03",
+      title: "Print",
+      description: "Maîtrise de l'impression haut de gamme pour tous vos supports de communication : catalogues, brochures, PLV, étiquettes... Une qualité irréprochable qui fait la différence.",
+      image: "/image/brouillon-ai/ai-print.png",
+      icon: FiPrinter,
+      imageRight: true,
+    },
+    {
+      number: "04",
+      title: "Devis 3D Studio",
+      description: "Visualisez vos projets avant même leur fabrication grâce à notre studio 3D. Obtenez des rendus hyperréalistes pour valider chaque détail avec précision et confiance.",
+      image: "/image/brouillon-ai/ai-studio3d.png",
+      icon: FiPlay,
+      imageRight: false,
+    },
+  ];
+
+  return (
+    <section className="bg-[#000B58] text-white py-24 md:py-36 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <motion.h2
+          initial={{ opacity: 0, y: -50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: [0.6, 0.05, -0.01, 0.9] }}
+          className="text-5xl md:text-6xl font-extrabold text-white text-center mb-20 relative z-10 font-serif tracking-tight"
+        >
+          Nos savoir-faire d&apos;exception
+        </motion.h2>
+
+        <div className="space-y-32 md:space-y-48 relative">
+          {savoirFaireItems.map((item, index) => (
+            <motion.div
+              key={item.number}
+              className={`flex flex-col items-center relative gap-x-16
+                          ${item.imageRight ? 'md:flex-row' : 'md:flex-row-reverse'}
+                          ${index === 1 ? 'md:-mt-24' : ''} 
+                          ${index === 2 ? 'md:-mt-20' : ''} 
+                          ${index === 3 ? 'md:-mt-28' : ''} 
+                          `}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={containerVariants}
+            >
+              {/* Grand numéro en arrière-plan */}
+              <motion.span
+                className={`absolute text-[10rem] md:text-[14rem] lg:text-[18rem] 
+                            font-bold text-white/5 select-none pointer-events-none z-0
+                            ${item.imageRight ? '-top-16 md:-left-24 lg:-left-32' : '-top-16 md:-right-24 lg:-right-32'}
+                            `}
+                variants={numberVariants}
+              >
+                {item.number}
+              </motion.span>
+
+              {/* Bloc de texte */}
+              <div
+                className={`w-full md:w-1/2 relative z-10 p-4 md:p-0 
+                            ${item.imageRight ? 'md:pr-12 lg:pr-24' : 'md:pl-12 lg:pl-24'}
+                            `}
+              >
+                <motion.div variants={textBlockVariants}>
+                  <item.icon className="text-5xl text-blue-400 mb-4 drop-shadow-lg" />
+                  <h3 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight font-serif tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="text-lg lg:text-xl text-gray-300 leading-relaxed max-w-lg">
+                    {item.description}
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Bloc d'image */}
+              <div
+                className={`w-full md:w-1/2 mt-12 md:mt-0 relative z-10
+                            ${item.imageRight ? 'md:pl-8 lg:pl-16' : 'md:pr-8 lg:pr-16'}
+                            `}
+              >
+                <motion.div
+                  className="rounded-xl overflow-hidden shadow-2xl hover:shadow-blue-500/30 transition-shadow duration-300 ease-out"
+                  variants={imageVariants}
+                  whileHover="hover"
+                  initial="hidden" // Ensure initial state is applied
+                  animate="visible" // Ensure visible state is applied if already in view
+                  viewport={{ once: true, amount: 0.3 }}
+                >
+                  <motion.div variants={imageHoverVariants}>
+                    <Image
+                      src={item.image}
+                      alt={`Illustration de ${item.title}`}
+                      width={1000} // Augmenté pour un look plus premium et détaillé
+                      height={750} // Aspect ratio 4:3
+                      objectFit="cover"
+                      className="w-full h-auto aspect-[4/3] md:aspect-[5/4] lg:aspect-[4/3] transition-transform duration-300 ease-out"
+                    />
+                  </motion.div>
+                </motion.div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+### Explications et notes d'implémentation :
+
+1.  **Structure de base:**
+    *   La section est englobée dans une balise `section` avec un arrière-plan `bg-[#000B58]` et un padding vertical généreux. `overflow-hidden` est crucial pour éviter que les grands nombres `absolute` ne créent une barre de défilement horizontale.
+    *   Le contenu est centré avec `max-w-7xl mx-auto`.
+    *   Le titre `Nos savoir-faire d'exception` utilise une typographie forte (`font-extrabold`, `font-serif`, `tracking-tight`) et une animation d'entrée simple.
+
+2.  **Layout asymétrique et éditorial:**
+    *   Chaque `savoirFaireItem` est un `motion.div` flexible (`flex flex-col md:flex-row`).
+    *   L'alternance est gérée par la prop `imageRight` et les classes `md:flex-row` ou `md:flex-row-reverse`.
+    *   Pour briser la monotonie et créer l'asymétrie éditoriale, j'ai ajouté des `md:-mt-XX` sur certains éléments (`index === 1`, `index === 2`, `index === 3`). Cela décale verticalement les blocs, créant un chevauchement visuel subtil.
+    *   Les `gap-x-16` et les `pr-12`, `pl-12` sur les blocs de texte et d'image créent un espace varié.
+
+3.  **Grands numéros comme éléments graphiques:**
+    *   Chaque numéro (`01`, `02`, etc.) est un `span` avec des classes Tailwind `text-[10rem] md:text-[14rem] lg:text-[18rem]` pour une taille colossale.
+    *   Ils sont positionnés en `absolute` par rapport à leur conteneur parent (`relative`).
+    *   `text-white/5` leur donne une opacité très faible, les rendant discrets mais présents en arrière-plan.
+    *   `select-none pointer-events-none z-0` assure qu'ils n'interfèrent pas avec la sélection de texte ou les interactions.
+    *   Leur position (`-top-16`, `-left-24`, `-right-24`) est ajustée pour qu'ils débordent élégamment.
+
+4.  **Typographie premium contrastée:**
+    *   `font-serif` est utilisé pour les titres de section et de savoir-faire (`h2`, `h3`) pour un look plus éditorial et premium, contrastant avec un potentiel `font-sans` pour le corps de texte si vous en avez un par défaut.
+    *   `font-bold`, `font-extrabold`, `leading-tight`, `tracking-tight` pour un impact maximal.
+    *   `text-gray-300` pour les descriptions offre un contraste suffisant sur le fond bleu foncé sans être trop agressif.
+    *   Les icônes `text-blue-400` apportent une touche de couleur vive.
+
+5.  **Images grandes et élégamment intégrées:**
+    *   Le composant `Image` de Next.js est utilisé pour l'optimisation.
+    *   `width={1000}` et `height={750}` (aspect ratio 4:3) pour des images de bonne taille, `objectFit="cover"` assure qu'elles remplissent leur espace.
+    *   `rounded-xl` pour des coins légèrement arrondis.
+    *   `shadow-2xl` pour une profondeur, avec un `hover:shadow-blue-500/30` pour un effet de survol sophistiqué.
+
+6.  **Framer Motion pour animations d'entrée et hover:**
+    *   **`initial="hidden"` et `whileInView="visible"`:** Pour que les animations se déclenchent uniquement lorsque l'élément entre dans le viewport. `viewport={{ once: true, amount: 0.3 }}` signifie que l'animation ne se joue qu'une seule fois lorsque 30% de l'élément est visible.
+    *   **`variants`:** Chaque type d'élément (conteneur, numéro, texte, image) a ses propres `variants` pour contrôler l'opacité, la position et l'échelle.
+    *   **`transition`:** Des durées et des `ease` personnalisés (`[0.6, 0.05, -0.01, 0.9]`) donnent un mouvement plus fluide et "premium" que les `ease` par défaut.
+    *   **`staggerChildren`:** Le `containerVariants` utilise `staggerChildren: 0.2` pour que les éléments internes (texte, image) apparaissent en décalé, rendant l'animation plus dynamique.
+    *   **`whileHover="hover"`:** Sur le `motion.div` qui contient l'image, cela déclenche les `imageHoverVariants` qui incluent un `scale` léger, une petite `rotate` et un changement de `boxShadow`.
+
+### Pour utiliser ce code :
+
+1.  **Créez le fichier:** Sauvegardez ce code dans un fichier comme `components/SavoirFaireSection.jsx`.
+2.  **Installez les dépendances:**
+    ```bash
+    npm install framer-motion react-icons
+    # ou
+    yarn add framer-motion react-icons
+    ```
+3.  **Placez les images:** Assurez-vous que les images (`ai-plv.png`, etc.) se trouvent bien dans le dossier `public/image/brouillon-ai/` de votre projet Next.js.
+4.  **Importez dans votre page:**
+    ```jsx
+    // pages/index.js (ou toute autre page)
+    import SavoirFaireSection from '../components/SavoirFaireSection';
+
+    export default function HomePage() {
+      return (
+        <main>
+          {/* Autres sections de votre page */}
+          <SavoirFaireSection />
+          {/* Autres sections */}
+        </main>
+      );
+    }
+    ```
+
+Ce JSX devrait vous donner une base solide et très élégante pour la section "Nos savoir-faire" de votre site Multi-Poles !

@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Pôles — PLV Carton, Packaging &amp; Impression</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory:    #F9F6EF;
+      --navy:     #000B58;
+      --gold:     #B8933A;
+      --warm-gray:#E8E0D0;
+      --text:     #1A1714;
+      --navy-60:  rgba(0,11,88,0.60);
+      --navy-40:  rgba(0,11,88,0.40);
+      --navy-10:  rgba(0,11,88,0.08);
+      --gold-20:  rgba(184,147,58,0.20);
+      --gold-08:  rgba(184,147,58,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--ivory);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Subtle dot texture overlay */
+    .texture {
+      background-image: radial-gradient(#000B5808 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── DEV BANNER ───────────────────────────────────────────────── */
+    .dev-banner {
+      background: #1A1714;
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 7px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+    }
+    .dev-banner a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin: 0 8px;
+    }
+    .dev-banner a:hover { color: #fff; }
+
+    /* ─── TOP MICRO BAR ────────────────────────────────────────────── */
+    .micro-bar {
+      background: var(--ivory);
+      border-bottom: 1px solid var(--gold-20);
+      text-align: center;
+      padding: 8px 20px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── HEADER ───────────────────────────────────────────────────── */
+    .site-header {
+      background: var(--ivory);
+      padding: 0 60px;
+      position: sticky;
+      top: 29px; /* below dev banner */
+      z-index: 100;
+    }
+
+    .header-main {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 22px 0;
+      gap: 40px;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-mark span {
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .logo-name {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .logo-sub {
+      font-family: 'Jost', sans-serif;
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Nav */
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 44px;
+    }
+    .site-nav a {
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--navy-60);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .site-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.35s ease;
+    }
+    .site-nav a:hover { color: var(--navy); }
+    .site-nav a:hover::after { width: 100%; }
+
+    /* CTA link */
+    .header-cta {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .header-cta a {
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .header-cta a:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .header-line {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold) 15%, var(--gold) 85%, transparent);
+      opacity: 0.6;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────────────── */
+    .hero {
+      min-height: calc(100vh - 110px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 80px 60px 80px 80px;
+      gap: 80px;
+      background: var(--ivory);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero.texture {
+      background-image: radial-gradient(#000B5808 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-color: var(--ivory);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .hero-eyebrow-line {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(56px, 5.5vw, 84px);
+      font-weight: 300;
+      line-height: 0.95;
+      color: var(--navy);
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 21px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--navy-60);
+      margin-bottom: 48px;
+      max-width: 420px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: 'Jost', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--navy);
+      padding: 16px 36px;
+      border: 1px solid var(--navy);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      font-family: 'Jost', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--navy);
+      background: transparent;
+      padding: 15px 32px;
+      border: 1px solid var(--navy-40);
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+      display: inline-block;
+    }
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Hero right / image */
+    .hero-right {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-image-frame {
+      position: relative;
+      border: 1px solid var(--gold);
+      padding: 8px;
+      background: var(--ivory);
+    }
+    .hero-image-frame::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid var(--gold-20);
+      pointer-events: none;
+    }
+
+    .hero-image-inner {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(160deg, #000B58 0%, #0D1F6B 100%);
+    }
+    .hero-image-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to top, rgba(249,246,239,0.22) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: 32px;
+      right: -20px;
+      background: var(--ivory);
+      border: 1px solid var(--gold);
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 8px 40px rgba(0,11,88,0.12);
+    }
+    .hero-badge-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .hero-badge-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .hero-badge-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 80px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .scroll-hint-line {
+      width: 1px;
+      height: 40px;
+      background: var(--gold);
+      opacity: 0.5;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .scroll-hint-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--navy-40);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+    }
+
+    /* ─── MANIFESTE ────────────────────────────────────────────────── */
+    .manifeste {
+      background: var(--ivory);
+      padding: 120px 60px;
+      text-align: center;
+      position: relative;
+    }
+    .manifeste.texture {
+      background-image: radial-gradient(#000B5808 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-color: var(--ivory);
+    }
+
+    .manifeste-inner {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .manifeste-lines {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .manifeste-line {
+      height: 1px;
+      width: 80px;
+      background: linear-gradient(to right, transparent, var(--gold));
+    }
+    .manifeste-line.right {
+      background: linear-gradient(to left, transparent, var(--gold));
+    }
+    .manifeste-ornament {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .manifeste-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--navy);
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .manifeste-quote::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 120px;
+      color: var(--gold);
+      opacity: 0.15;
+      position: absolute;
+      top: -40px;
+      left: -30px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .manifeste-values {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-top: 56px;
+    }
+    .manifeste-value {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 40px;
+    }
+    .manifeste-value:not(:last-child) {
+      border-right: 1px solid var(--gold-20);
+    }
+    .manifeste-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .manifeste-value-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 11.5px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy-60);
+      white-space: nowrap;
+    }
+
+    /* ─── SERVICES ─────────────────────────────────────────────────── */
+    .services {
+      background: var(--ivory);
+      padding: 100px 60px 120px;
+    }
+
+    .section-header {
+      margin-bottom: 64px;
+    }
+    .section-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 4vw, 58px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--navy);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .service-card {
+      background: var(--ivory);
+      border-top: 1px solid var(--gold);
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease;
+      cursor: pointer;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--gold-08) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-card-image {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      background: linear-gradient(160deg, #0D2070 0%, #1A3A8F 100%);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .service-card-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(0,11,88,0.25) 0%, transparent 60%);
+    }
+
+    .service-card-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .service-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .service-card-desc {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--navy-60);
+      margin-bottom: 28px;
+    }
+    .service-card-link {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: border-color 0.3s, gap 0.3s;
+    }
+    .service-card:hover .service-card-link {
+      border-color: var(--gold);
+      gap: 14px;
+    }
+
+    /* ─── EXPERTISE (DARK) ─────────────────────────────────────────── */
+    .expertise {
+      background: var(--navy);
+      padding: 120px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .expertise::before {
+      content: 'MP';
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 420px;
+      font-weight: 700;
+      color: rgba(184,147,58,0.04);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .expertise-left {
+      position: relative;
+    }
+    .expertise-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+    .expertise-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 3.8vw, 54px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+    .expertise-desc {
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 48px;
+      max-width: 460px;
+    }
+
+    .expertise-stats {
+      display: flex;
+      gap: 48px;
+    }
+    .expertise-stat {}
+    .expertise-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .expertise-stat-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.40);
+    }
+
+    .expertise-right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .expertise-item {
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(184,147,58,0.15);
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 24px;
+      align-items: start;
+      transition: background 0.3s;
+    }
+    .expertise-item:first-child { border-top: 1px solid rgba(184,147,58,0.15); }
+
+    .expertise-item-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      padding-top: 3px;
+    }
+    .expertise-item-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .expertise-item-desc {
+      font-family: 'Jost', sans-serif;
+      font-size: 13.5px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.50);
+    }
+
+    /* Gold bottom line */
+    .expertise-bottom-line {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+      margin-top: 80px;
+      opacity: 0.4;
+    }
+
+    /* ─── RÉALISATIONS ─────────────────────────────────────────────── */
+    .realisations {
+      background: var(--ivory);
+      padding: 120px 0 120px 60px;
+      overflow: hidden;
+    }
+    .realisations.texture {
+      background-image: radial-gradient(#000B5808 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-color: var(--ivory);
+    }
+
+    .realisations-header {
+      padding-right: 60px;
+      margin-bottom: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .realisations-scroll {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding-right: 60px;
+      padding-bottom: 16px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+    }
+    .realisations-scroll::-webkit-scrollbar { display: none; }
+
+    .realisation-card {
+      flex: 0 0 340px;
+      background: var(--ivory);
+      border: 1px solid var(--warm-gray);
+      padding: 12px;
+      transition: border-color 0.35s, transform 0.35s;
+    }
+    .realisation-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+
+    .realisation-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      background: linear-gradient(160deg, #0D1F6B 0%, #1A3A8F 100%);
+      overflow: hidden;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .realisation-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .realisation-card:hover .realisation-image img { transform: scale(1.04); }
+
+    .realisation-card-tag {
+      font-family: 'Jost', sans-serif;
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .realisation-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .realisation-card-desc {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--navy-60);
+      line-height: 1.65;
+    }
+
+    .view-all-link {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--navy);
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 3px;
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+    .view-all-link:hover { color: var(--gold); }
+
+    /* ─── CTA SECTION ──────────────────────────────────────────────── */
+    .cta-section {
+      background: var(--warm-gray);
+      padding: 140px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(#000B5806 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .cta-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 4.5vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+
+    .cta-subtitle {
+      font-family: 'Jost', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--navy-60);
+      margin-bottom: 52px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .cta-phone {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--navy-60);
+    }
+    .cta-phone a {
+      color: var(--gold);
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .cta-phone a:hover { border-color: var(--gold); }
+
+    /* ─── CLIENTS / CERTIFICATIONS ─────────────────────────────────── */
+    .partners {
+      background: var(--ivory);
+      padding: 64px 60px;
+      border-top: 1px solid var(--warm-gray);
+      border-bottom: 1px solid var(--warm-gray);
+    }
+    .partners-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--navy-40);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .partners-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 72px;
+      flex-wrap: wrap;
+    }
+    .partner-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--navy-40);
+      transition: color 0.3s;
+      cursor: default;
+    }
+    .partner-name:hover { color: var(--navy); }
+
+    /* ─── FOOTER ───────────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--navy);
+      padding: 80px 60px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-footer::before {
+      content: 'MP';
+      position: absolute;
+      left: -60px;
+      bottom: -40px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 360px;
+      font-weight: 700;
+      color: rgba(184,147,58,0.05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 80px;
+      position: relative;
+      padding-bottom: 72px;
+    }
+
+    .footer-col {}
+
+    .footer-manifeste {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .footer-logo-mark {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(184,147,58,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .footer-logo-mark span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    .footer-brand-name {
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .footer-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 32px;
+    }
+
+    .footer-since {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.7;
+    }
+
+    .footer-nav-title {
+      font-family: 'Jost', sans-serif;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      opacity: 0.8;
+    }
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-nav-list li a {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.3s;
+      display: inline-block;
+      position: relative;
+    }
+    .footer-nav-list li a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .footer-nav-list li a:hover { color: rgba(255,255,255,0.9); }
+    .footer-nav-list li a:hover::after { width: 100%; }
+
+    .footer-contact-item {
+      margin-bottom: 16px;
+    }
+    .footer-contact-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .footer-contact-value {
+      font-family: 'Jost', sans-serif;
+      font-size: 13.5px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+    .footer-contact-value a {
+      color: rgba(255,255,255,0.6);
+      transition: color 0.3s;
+    }
+    .footer-contact-value a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(184,147,58,0.25);
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+    .footer-copyright {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.30);
+    }
+    .footer-legal {
+      display: flex;
+      gap: 32px;
+    }
+    .footer-legal a {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.30);
+      transition: color 0.3s;
+    }
+    .footer-legal a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ─── UTILITIES ────────────────────────────────────────────────── */
+    .gold-line-full {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+      opacity: 0.3;
+    }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .hero { padding: 60px 40px; gap: 48px; }
+      .expertise-grid { gap: 48px; }
+      .footer-grid { gap: 48px; }
+    }
+
+    @media (max-width: 900px) {
+      .site-header { padding: 0 32px; }
+      .header-main { grid-template-columns: 1fr auto; }
+      .header-cta { display: none; }
+      .site-nav { gap: 28px; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 60px 32px 80px;
+        gap: 56px;
+      }
+      .hero-title { font-size: clamp(44px, 9vw, 64px); }
+      .hero-right { order: -1; max-width: 500px; margin: 0 auto; }
+      .hero-badge { right: 0; bottom: 20px; }
+      .scroll-hint { display: none; }
+
+      .manifeste { padding: 80px 32px; }
+      .manifeste-values { gap: 24px; }
+      .manifeste-value { padding: 0 20px; }
+
+      .services { padding: 80px 32px 100px; }
+      .services-grid { grid-template-columns: 1fr; }
+
+      .expertise { padding: 80px 32px; }
+      .expertise-grid { grid-template-columns: 1fr; gap: 60px; }
+
+      .realisations { padding: 80px 0 80px 32px; }
+      .realisations-header { padding-right: 32px; }
+
+      .cta-section { padding: 100px 32px; }
+
+      .partners { padding: 48px 32px; }
+      .partners-row { gap: 40px; }
+
+      .site-footer { padding: 60px 32px 0; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav { display: none; }
+      .header-main { grid-template-columns: 1fr; justify-items: center; }
+      .manifeste-values { flex-direction: column; align-items: center; }
+      .manifeste-value { border-right: none !important; border-bottom: 1px solid var(--gold-20); padding: 12px 0; }
+      .manifeste-value:last-child { border-bottom: none; }
+      .expertise-stats { gap: 28px; }
+      .cta-actions { flex-direction: column; }
+      .partners-row { gap: 28px; }
+      .footer-legal { flex-direction: column; gap: 8px; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- DEV BANNER -->
+  <div class="dev-banner">
+    Design C — French Craft Premium
+    &nbsp;|&nbsp;
+    <a href="/design-a/index.html">&#8592; Design A Editorial</a>
+    <a href="/design-b/index.html">&#8592; Design B Tech</a>
+  </div>
+
+  <!-- TOP MICRO BAR -->
+  <div class="micro-bar">
+    Depuis 1996 &mdash; Montreuil, France
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-main">
+      <!-- Logo -->
+      <a href="/" class="logo">
+        <div class="logo-mark"><span>MP</span></div>
+        <div class="logo-text">
+          <span class="logo-name">Multi-P&ocirc;les</span>
+          <span class="logo-sub">Fabricant &middot; PLV &amp; Packaging</span>
+        </div>
+      </a>
+
+      <!-- Navigation -->
+      <nav class="site-nav">
+        <a href="#services">Savoir-faire</a>
+        <a href="#realisations">R&eacute;alisations</a>
+        <a href="#simulateur">Simulateur</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- CTA -->
+      <div class="header-cta">
+        <a href="#contact">Demander un devis</a>
+      </div>
+    </div>
+    <div class="header-line"></div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero texture">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-text">Fabricant PLV &middot; Packaging &middot; Impression</span>
+        <div class="hero-eyebrow-line"></div>
+      </div>
+
+      <h1 class="hero-title">
+        L&rsquo;excellence<br />
+        carton au service<br />
+        <em>de vos marques.</em>
+      </h1>
+
+      <p class="hero-subtitle">
+        Concepteurs et fabricants de PLV, packagings et supports imprim&eacute;s
+        pour les grandes maisons pharmaceutiques et cosm&eacute;tiques.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">D&eacute;couvrir notre univers</a>
+        <a href="#simulateur" class="btn-ghost">Simulateur 3D</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-image-frame">
+        <div class="hero-image-inner">
+          <img
+            src="/image/selecta/hero/hero-01-collage.jpg"
+            alt="PLV et packaging Multi-P&ocirc;les"
+            onerror="this.style.display='none'"
+          />
+          <div class="hero-image-overlay"></div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <span class="hero-badge-icon">&#x269C;</span>
+        <span class="hero-badge-text">Made in France</span>
+        <span class="hero-badge-sub">Montreuil &middot; 93</span>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      <span class="scroll-hint-text">D&eacute;filer</span>
+    </div>
+  </section>
+
+  <!-- PARTNERS STRIP -->
+  <div class="partners">
+    <p class="partners-label">Ils nous font confiance</p>
+    <div class="partners-row">
+      <span class="partner-name">L&rsquo;Or&eacute;al</span>
+      <span class="partner-name">LVMH</span>
+      <span class="partner-name">Sanofi</span>
+      <span class="partner-name">Chanel</span>
+      <span class="partner-name">Clarins</span>
+      <span class="partner-name">Pierre Fabre</span>
+      <span class="partner-name">Shiseido</span>
+    </div>
+  </div>
+
+  <!-- MANIFESTE -->
+  <section class="manifeste texture">
+    <div class="manifeste-inner">
+      <div class="manifeste-lines">
+        <div class="manifeste-line"></div>
+        <div class="manifeste-ornament"></div>
+        <div class="manifeste-line right"></div>
+      </div>
+
+      <blockquote class="manifeste-quote">
+        Nous concevons, fabriquons et d&eacute;ployons vos PLV et packagings
+        avec la pr&eacute;cision d&rsquo;un artisan
+        et la r&eacute;activit&eacute; d&rsquo;un industriel.
+      </blockquote>
+
+      <div class="manifeste-lines">
+        <div class="manifeste-line"></div>
+        <div class="manifeste-ornament"></div>
+        <div class="manifeste-line right"></div>
+      </div>
+
+      <div class="manifeste-values">
+        <div class="manifeste-value">
+          <div class="manifeste-dot"></div>
+          <span class="manifeste-value-text">Savoir-faire depuis 1996</span>
+        </div>
+        <div class="manifeste-value">
+          <div class="manifeste-dot"></div>
+          <span class="manifeste-value-text">Production sur-mesure</span>
+        </div>
+        <div class="manifeste-value">
+          <div class="manifeste-dot"></div>
+          <span class="manifeste-value-text">Partenaire technique</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="section-header">
+      <p class="section-eyebrow">Savoir-faire</p>
+      <h2 class="section-title">Ce que nous<br />fabriquons</h2>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- PLV -->
+      <div class="service-card">
+        <div class="service-card-image">
+          <img src="/image/selecta/hero/hero-02.jpg" alt="PLV Carton" onerror="this.style.display='none'" />
+          <div class="service-card-image-overlay"></div>
+        </div>
+        <div class="service-card-number">01</div>
+        <h3 class="service-card-title">PLV Carton</h3>
+        <p class="service-card-desc">
+          Pr&eacute;sentoirs, displays, stop-rayons, podiums et structures volumiques
+          con&ccedil;us pour valoriser vos produits en point de vente.
+          Du prototype au d&eacute;ploiement national.
+        </p>
+        <a href="#" class="service-card-link">D&eacute;couvrir &rarr;</a>
+      </div>
+
+      <!-- Packaging -->
+      <div class="service-card">
+        <div class="service-card-image">
+          <img src="/image/pharma/07_Gemini_Generated_Image_ik87dgik87dgik87.png" alt="Packaging haut de gamme" onerror="this.style.display='none'" />
+          <div class="service-card-image-overlay"></div>
+        </div>
+        <div class="service-card-number">02</div>
+        <h3 class="service-card-title">Packaging</h3>
+        <p class="service-card-desc">
+          &Eacute;tuis, bo&icirc;tages, coffrets et emballages haut de gamme pour la pharmacie,
+          la cosm&eacute;tique et le luxe. Finitions premium : gaufrage, dorure, vernis s&eacute;lectif.
+        </p>
+        <a href="#" class="service-card-link">D&eacute;couvrir &rarr;</a>
+      </div>
+
+      <!-- Impression -->
+      <div class="service-card">
+        <div class="service-card-image">
+          <img src="/image/classic/Gemini_Generated_Image_1npqok1npqok1npq.png" alt="Impression offset" onerror="this.style.display='none'" />
+          <div class="service-card-image-overlay"></div>
+        </div>
+        <div class="service-card-number">03</div>
+        <h3 class="service-card-title">Impression</h3>
+        <p class="service-card-desc">
+          Offset feuilles grand format, s&eacute;rigraphie, num&eacute;rique. ILF, affiches, PLV imprim&eacute;e.
+          Calibration colorim&eacute;trique rigoureuse pour les exigences des grandes marques.
+        </p>
+        <a href="#" class="service-card-link">D&eacute;couvrir &rarr;</a>
+      </div>
+
+      <!-- Prototypage -->
+      <div class="service-card">
+        <div class="service-card-image">
+          <img src="/image/selecta/savoir-faire/sf-studio.jpg" alt="Prototypage et bureau d&rsquo;&eacute;tudes" onerror="this.style.display='none'" />
+          <div class="service-card-image-overlay"></div>
+        </div>
+        <div class="service-card-number">04</div>
+        <h3 class="service-card-title">Prototypage</h3>
+        <p class="service-card-desc">
+          Bureau d&rsquo;&eacute;tudes int&eacute;gr&eacute;, table de d&eacute;coupe Kongsberg. De la maquette &agrave; l&rsquo;industrialisation
+          en circuit court &mdash; r&eacute;activit&eacute; maximale, qualit&eacute; garantie.
+        </p>
+        <a href="#" class="service-card-link">D&eacute;couvrir &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERTISE (DARK) -->
+  <section class="expertise" id="simulateur">
+    <div class="expertise-grid">
+      <div class="expertise-left">
+        <p class="expertise-eyebrow">Notre histoire</p>
+        <h2 class="expertise-title">
+          Trois d&eacute;cennies<br />
+          d&rsquo;expertise carton.
+        </h2>
+        <p class="expertise-desc">
+          Fond&eacute;e en 1996 &agrave; Montreuil, Multi-P&ocirc;les est aujourd&rsquo;hui un partenaire
+          de r&eacute;f&eacute;rence pour les industriels, agences et marques qui exigent le meilleur
+          en mati&egrave;re de PLV et packaging carton.
+        </p>
+        <div class="expertise-stats">
+          <div class="expertise-stat">
+            <div class="expertise-stat-num">28</div>
+            <div class="expertise-stat-label">Ann&eacute;es d&rsquo;exp&eacute;rience</div>
+          </div>
+          <div class="expertise-stat">
+            <div class="expertise-stat-num">500+</div>
+            <div class="expertise-stat-label">Projets / an</div>
+          </div>
+          <div class="expertise-stat">
+            <div class="expertise-stat-num">3</div>
+            <div class="expertise-stat-label">Sites GIE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="expertise-right">
+        <div class="expertise-item">
+          <span class="expertise-item-num">01</span>
+          <div>
+            <div class="expertise-item-title">Conception int&eacute;gr&eacute;e</div>
+            <div class="expertise-item-desc">Bureau d&rsquo;&eacute;tudes interne, mod&eacute;lisation 3D, simulation d&rsquo;assemblage. Du brief &agrave; la maquette en 48h.</div>
+          </div>
+        </div>
+        <div class="expertise-item">
+          <span class="expertise-item-num">02</span>
+          <div>
+            <div class="expertise-item-title">Fabrication sur-mesure</div>
+            <div class="expertise-item-desc">D&eacute;coupe, refoulage, collage et finitions sur une cha&icirc;ne ma&icirc;tris&eacute;e de bout en bout, en r&eacute;gie propre.</div>
+          </div>
+        </div>
+        <div class="expertise-item">
+          <span class="expertise-item-num">03</span>
+          <div>
+            <div class="expertise-item-title">R&eacute;seau GIE sp&eacute;cialis&eacute;</div>
+            <div class="expertise-item-desc">Cartoneo (PLV commerciale) et Freller (pharma/cosm&eacute;tique) : une expertise sectorielle unique.</div>
+          </div>
+        </div>
+        <div class="expertise-item">
+          <span class="expertise-item-num">04</span>
+          <div>
+            <div class="expertise-item-title">Transition &eacute;coresponsable</div>
+            <div class="expertise-item-desc">Cartons recycl&eacute;s et FSC, encres v&eacute;g&eacute;tales, circuits courts. L&rsquo;artisanat responsable comme engagement.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="expertise-bottom-line"></div>
+  </section>
+
+  <!-- RÉALISATIONS -->
+  <section class="realisations texture" id="realisations">
+    <div class="realisations-header">
+      <div>
+        <p class="section-eyebrow">R&eacute;alisations</p>
+        <h2 class="section-title">Nos derni&egrave;res<br />cr&eacute;ations</h2>
+      </div>
+      <a href="#" class="view-all-link">Voir toutes les r&eacute;alisations &rarr;</a>
+    </div>
+
+    <div class="realisations-scroll">
+
+      <div class="realisation-card">
+        <div class="realisation-image">
+          <img src="/image/selecta/hero/hero-03.jpg" alt="PLV pharmacie" onerror="this.style.display='none'" />
+        </div>
+        <p class="realisation-card-tag">PLV Pharmacie</p>
+        <h3 class="realisation-card-title">Display sol Sanofi</h3>
+        <p class="realisation-card-desc">Structure 4 niveaux, impression offset 4 couleurs + vernis, 2 000 unit&eacute;s.</p>
+      </div>
+
+      <div class="realisation-card">
+        <div class="realisation-image">
+          <img src="/image/cosmetique/19_Gemini_Generated_Image_kfeoc6kfeoc6kfeo.png" alt="Coffret cosmétique" onerror="this.style.display='none'" />
+        </div>
+        <p class="realisation-card-tag">Packaging Luxe</p>
+        <h3 class="realisation-card-title">Coffret cadeau Clarins</h3>
+        <p class="realisation-card-desc">Carton lamin&eacute; mat, dorure &agrave; chaud or, embossage logo. &Eacute;dition limit&eacute;e No&euml;l.</p>
+      </div>
+
+      <div class="realisation-card">
+        <div class="realisation-image">
+          <img src="/image/pharma/Gemini_Generated_Image_qliyyfqliyyfqliy.png" alt="Stop rayon cosmétique" onerror="this.style.display='none'" />
+        </div>
+        <p class="realisation-card-tag">PLV Cosm&eacute;tique</p>
+        <h3 class="realisation-card-title">Stop-rayon L&rsquo;Or&eacute;al</h3>
+        <p class="realisation-card-desc">S&eacute;rie de 12 visuels, production offset + d&eacute;coupe sp&eacute;ciale, livraison nationale.</p>
+      </div>
+
+      <div class="realisation-card">
+        <div class="realisation-image">
+          <img src="/image/selecta/hero/hero-04.jpg" alt="Présentoir comptoir" onerror="this.style.display='none'" />
+        </div>
+        <p class="realisation-card-tag">PLV Comptoir</p>
+        <h3 class="realisation-card-title">Pr&eacute;sentoir Pierre Fabre</h3>
+        <p class="realisation-card-desc">Pr&eacute;sentoir comptoir 3 poches, carton gris 3 mm, habillage imprim&eacute; pleine face.</p>
+      </div>
+
+      <div class="realisation-card">
+        <div class="realisation-image">
+          <img src="/image/kraft/Gemini_Generated_Image_5hs4pn5hs4pn5hs4.png" alt="Packaging écoresponsable" onerror="this.style.display='none'" />
+        </div>
+        <p class="realisation-card-tag">Packaging &Eacute;co</p>
+        <h3 class="realisation-card-title">Gamme kraft Shiseido</h3>
+        <p class="realisation-card-desc">Boitage kraft naturel FSC, encres v&eacute;g&eacute;tales, finition cire d&rsquo;abeille. Sans plastique.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="cta-inner">
+      <p class="cta-eyebrow">Travaillons ensemble</p>
+      <h2 class="cta-title">
+        Parlons de votre<br />prochain projet.
+      </h2>
+      <p class="cta-subtitle">
+        Notre &eacute;quipe vous accompagne de la conception &agrave; la livraison.
+        D&eacute;lais ma&icirc;tris&eacute;s, qualit&eacute; irreprochable.
+      </p>
+      <div class="cta-actions">
+        <a href="mailto:contact@multi-poles.net" class="btn-primary">Demander un devis</a>
+        <a href="#simulateur" class="btn-ghost">Essayer le simulateur 3D</a>
+      </div>
+      <p class="cta-phone">
+        Ou appelez-nous&nbsp;:
+        <a href="tel:+33143911771">01&nbsp;43&nbsp;91&nbsp;17&nbsp;71</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+
+      <!-- Col 1 : Manifeste -->
+      <div class="footer-col">
+        <div class="footer-manifeste">
+          <div class="footer-logo-mark"><span>MP</span></div>
+          <span class="footer-brand-name">Multi-P&ocirc;les</span>
+        </div>
+        <p class="footer-tagline">
+          Fabricant artisan d&rsquo;excellence,<br />
+          au service des grandes marques<br />
+          depuis pr&egrave;s de trois d&eacute;cennies.
+        </p>
+        <span class="footer-since">Fond&eacute;e en 1996 &mdash; Montreuil</span>
+      </div>
+
+      <!-- Col 2 : Navigation -->
+      <div class="footer-col">
+        <p class="footer-nav-title">Navigation</p>
+        <ul class="footer-nav-list">
+          <li><a href="#services">PLV Carton</a></li>
+          <li><a href="#services">Packaging</a></li>
+          <li><a href="#services">Impression</a></li>
+          <li><a href="#services">Prototypage</a></li>
+          <li><a href="#realisations">R&eacute;alisations</a></li>
+          <li><a href="#simulateur">Simulateur 3D</a></li>
+          <li><a href="#contact">Contact &amp; Devis</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3 : Contact -->
+      <div class="footer-col">
+        <p class="footer-nav-title">Contact</p>
+        <div class="footer-contact-item">
+          <p class="footer-contact-label">Adresse</p>
+          <p class="footer-contact-value">53 rue des Deux Communes<br />93100 Montreuil, France</p>
+        </div>
+        <div class="footer-contact-item">
+          <p class="footer-contact-label">T&eacute;l&eacute;phone</p>
+          <p class="footer-contact-value"><a href="tel:+33143911771">01 43 91 17 71</a></p>
+        </div>
+        <div class="footer-contact-item">
+          <p class="footer-contact-label">Email</p>
+          <p class="footer-contact-value"><a href="mailto:contact@multi-poles.net">contact@multi-poles.net</a></p>
+        </div>
+        <div class="footer-contact-item">
+          <p class="footer-contact-label">R&eacute;seau GIE</p>
+          <p class="footer-contact-value">Cartoneo &middot; Freller</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copyright">&copy; 2025 Multi-P&ocirc;les. Tous droits r&eacute;serv&eacute;s.</p>
+      <div class="footer-legal">
+        <a href="#">Mentions l&eacute;gales</a>
+        <a href="#">Politique de confidentialit&eacute;</a>
+        <a href="#">CGV</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Drag-to-scroll for realisations
+    const scrollEl = document.querySelector('.realisations-scroll');
+    if (scrollEl) {
+      let isDown = false, startX, scrollLeft;
+      scrollEl.addEventListener('mousedown', e => {
+        isDown = true;
+        scrollEl.style.cursor = 'grabbing';
+        startX = e.pageX - scrollEl.offsetLeft;
+        scrollLeft = scrollEl.scrollLeft;
+      });
+      scrollEl.addEventListener('mouseleave', () => { isDown = false; scrollEl.style.cursor = 'grab'; });
+      scrollEl.addEventListener('mouseup', () => { isDown = false; scrollEl.style.cursor = 'grab'; });
+      scrollEl.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollEl.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        scrollEl.scrollLeft = scrollLeft - walk;
+      });
+    }
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.service-card, .expertise-item, .realisation-card, .manifeste-value').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>

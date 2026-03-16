@@ -1,0 +1,164 @@
+Here's the JSX for your premium 'Nos savoir-faire' section, featuring a luxury industrial aesthetic with clean architectural lines, minimal design, Framer Motion animations, and Tailwind CSS.
+
+This component is designed for modern Next.js applications, utilizing `next/image` for optimized image loading.
+
+```jsx
+// components/NosSavoirFaireSection.jsx
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+
+// --- Icon Components (Simple SVGs for demonstration) ---
+// You might replace these with icons from a library like Heroicons or Font Awesome
+const LightbulbIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 20v-3m0 0v-3m0 3v3m0-3h.01M17 14v3m0 0v3m0-3h.01M7 14v3m0 0v3m0-3h.01M12 3a6 6 0 00-6 6c0 1.256.406 2.417 1.094 3.327L12 17l4.906-4.673C17.594 11.417 18 10.256 18 9a6 6 0 00-6-6z" />
+  </svg>
+);
+
+const PackageIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+  </svg>
+);
+
+const PrinterIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m0 0v3a2 2 0 002 2h6a2 2 0 002-2v-3M7 17h10M5 12h14" />
+  </svg>
+);
+
+const PlayIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+// --- Data for Categories ---
+const categoriesData = [
+  {
+    id: '01',
+    title: 'PLV',
+    description: 'Conception et fabrication de Publicité sur le Lieu de Vente impactante et innovante, conçue pour captiver votre audience.',
+    icon: LightbulbIcon,
+    image: '/image/brouillon-ai/ai-plv.png',
+    cta: 'Découvrir la PLV',
+  },
+  {
+    id: '02',
+    title: 'Packaging',
+    description: 'Design et production de solutions d\'emballage créatives qui protègent, valorisent et distinguent vos produits sur le marché.',
+    icon: PackageIcon,
+    image: '/image/brouillon-ai/ai-packaging.png',
+    cta: 'Explorer le Packaging',
+  },
+  {
+    id: '03',
+    title: 'Print',
+    description: 'Création et impression de supports de communication visuelle de haute qualité pour tous vos besoins, du flyer à la signalétique.',
+    icon: PrinterIcon,
+    image: '/image/brouillon-ai/ai-print.png',
+    cta: 'Voir nos réalisations Print',
+  },
+  {
+    id: '04',
+    title: 'Devis 3D Studio',
+    description: 'Visualisations 3D immersives et interactives pour présenter vos projets avec un réalisme saisissant et une clarté inégalée.',
+    icon: PlayIcon,
+    image: '/image/brouillon-ai/ai-studio3d.png',
+    cta: 'Obtenir un Devis 3D',
+  },
+];
+
+// --- Main Component ---
+export default function NosSavoirFaireSection() {
+  return (
+    <section className="bg-[#000B58] min-h-screen text-white">
+      {categoriesData.map((category, index) => (
+        <motion.div
+          key={category.id}
+          className={`flex w-full min-h-[550px] items-stretch overflow-hidden relative
+            ${index % 2 === 1 ? 'flex-row-reverse' : 'flex-row'}
+          `} // Alternating layout for visual interest
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: index * 0.1 }}
+        >
+          {/* Left 40% Content Block */}
+          <div className={`relative w-2/5 p-16 flex flex-col justify-center
+            ${index % 2 === 1 ? 'pr-20' : 'pl-20'} // Adjust padding based on layout direction
+          `}>
+            {/* Category Number */}
+            <p className="text-7xl font-light text-gray-500 mb-6 tracking-tight opacity-70">
+              {category.id}
+            </p>
+
+            {/* Icon */}
+            {category.icon && (
+              <category.icon className="w-20 h-20 text-blue-400 mb-8 stroke-[1.25px]" />
+            )}
+
+            {/* Title */}
+            <h2 className="text-5xl font-extrabold text-white mb-6 leading-tight tracking-wide">
+              {category.title}
+            </h2>
+
+            {/* Description */}
+            <p className="text-xl text-gray-300 leading-relaxed max-w-md">
+              {category.description}
+            </p>
+          </div>
+
+          {/* Right 60% Image Block with Hover Effect */}
+          <motion.div
+            className="w-3/5 relative overflow-hidden"
+            initial={false} // Prevents initial animation on the container itself
+            whileHover="hover"
+          >
+            <motion.div
+              className="relative w-full h-full"
+              variants={{
+                initial: { scale: 1 },
+                hover: { scale: 1.05 },
+              }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <Image
+                src={category.image}
+                alt={category.title}
+                fill
+                priority={index < 2} // Prioritize loading for the first two images
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 60vw" // Optimize image loading for different viewports
+              />
+            </motion.div>
+
+            {/* CTA Overlay */}
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 transition-colors duration-300"
+              variants={{
+                initial: { opacity: 0 },
+                hover: { opacity: 1 },
+              }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <motion.button
+                className="px-10 py-5 bg-white text-[#000B58] font-bold text-xl uppercase tracking-wide rounded-full shadow-xl hover:bg-gray-200 transition-all duration-300"
+                variants={{
+                  initial: { y: 20, opacity: 0 },
+                  hover: { y: 0, opacity: 1 },
+                }}
+                transition={{ delay: 0.1, duration: 0.3, ease: "easeOut" }}
+                // Add your actual link/action here, e.g., onClick={() => router.push('/some-path')}
+              >
+                {category.cta}
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      ))}
+    </section>
+  );
+}
+```
