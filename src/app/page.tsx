@@ -13,6 +13,55 @@ import { EditableText } from '@/components/EditableText';
 import { useEditorCarousel } from '@/hooks/use-editor-carousel';
 import { useEditor } from '@/components/EditorWrapper';
 
+// ─── Zone draggable propre (juste cadre + label, sauvegarde localStorage) ──
+function DragZone({ id, color, label, init }: {
+  id: string; color: string; label: string;
+  init: { top: number; left: number; width: number; height: number };
+}) {
+  const key = `mp-zone-${id}`;
+  const [r, setR] = useState(init);
+  const loaded = useRef(false);
+  const drag = useRef<{ sx: number; sy: number; sr: typeof init; mode: 'move'|'resize' } | null>(null);
+
+  useEffect(() => {
+    if (loaded.current) return;
+    loaded.current = true;
+    try { const s = localStorage.getItem(key); if (s) setR(JSON.parse(s)); } catch {}
+  }, [key]);
+
+  useEffect(() => { if (loaded.current) localStorage.setItem(key, JSON.stringify(r)); }, [r, key]);
+
+  const down = (e: React.PointerEvent, mode: 'move'|'resize') => {
+    e.preventDefault(); e.stopPropagation();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    drag.current = { sx: e.clientX, sy: e.clientY, sr: { ...r }, mode };
+  };
+  const move = (e: React.PointerEvent) => {
+    if (!drag.current) return;
+    const pw = e.currentTarget.parentElement?.offsetWidth ?? 1;
+    const ph = e.currentTarget.parentElement?.offsetHeight ?? 1;
+    const dx = ((e.clientX - drag.current.sx) / pw) * 100;
+    const dy = ((e.clientY - drag.current.sy) / ph) * 100;
+    const s = drag.current.sr;
+    if (drag.current.mode === 'move') setR({ ...s, top: Math.max(0, s.top + dy), left: Math.max(0, s.left + dx) });
+    else setR({ ...s, width: Math.max(10, s.width + dx), height: Math.max(3, s.height + dy) });
+  };
+  const up = () => { drag.current = null; };
+
+  return (
+    <div
+      style={{ position: 'absolute', top: `${r.top}%`, left: `${r.left}%`, width: `${r.width}%`, height: `${r.height}%`, border: `2px dashed ${color}`, borderRadius: 10, zIndex: 20, cursor: 'move' }}
+      onPointerDown={e => down(e, 'move')} onPointerMove={move} onPointerUp={up}
+    >
+      <span style={{ position: 'absolute', top: -14, left: 6, background: color, color: '#fff', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 4, pointerEvents: 'none' }}>{label}</span>
+      <div style={{ position: 'absolute', bottom: 0, right: 0, width: 14, height: 14, background: color, borderRadius: '3px 0 10px 0', cursor: 'se-resize' }}
+        onPointerDown={e => { e.stopPropagation(); down(e, 'resize'); }} />
+    </div>
+  );
+}
+
+// ImgZone supprimé — remplacé par overlay produit inline dans la section cards
+
 // Fallback carousel data
 const fallbackCarouselItems: CarouselSlide[] = [
   {
@@ -234,6 +283,13 @@ const solutionVisualsBySlug: Record<string, { image: string; tags: string[] }> =
   },
 };
 
+const geminiCards = [
+  { slug: 'etuis', frame: '/image/selecta/savoir-faire/frame-etuis.png', photo: '/image/selecta/savoir-faire/photo-etuis.png', link: '/solutions#packaging' },
+  { slug: 'plv', frame: '/image/selecta/savoir-faire/frame-plv.png', photo: '/image/selecta/savoir-faire/photo-plv.png', link: '/solutions#plv' },
+  { slug: 'packaging', frame: '/image/selecta/savoir-faire/frame-packaging.png', photo: '/image/selecta/savoir-faire/photo-packaging.png', link: '/solutions#packaging' },
+  { slug: 'print', frame: '/image/selecta/savoir-faire/frame-print.png', photo: '/image/selecta/savoir-faire/photo-print.png', link: '/solutions#print' },
+];
+
 const vitrineItems = [
   { id: 'v1', title: 'PLV comptoir Saugella', image: '/image/selecta/vitrine/vitrine-plv-comptoir-01.jpg', tags: ['PLV', 'Comptoir'] },
   { id: 'v2', title: 'PLV comptoir Innoxa', image: '/image/selecta/vitrine/vitrine-plv-comptoir-02.jpg', tags: ['PLV', 'Pharmacie'] },
@@ -366,7 +422,7 @@ export default function Home() {
     totalSlides: safeCarouselLength,
     intervalMs: 5000,
   });
-  const { heroLayouts, setHeroLayout } = useEditor();
+  const { heroLayouts, setHeroLayout, imageOverrides } = useEditor();
 
   const displayedSolutions = baseSolutionCategories.map((base) => {
     const match = Array.isArray(solutionsData)
@@ -418,7 +474,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Hero Carousel — plein écran moins le header */}
-      <section className="relative mt-6 md:mt-8 h-[67vh] min-h-[342px] w-full overflow-hidden bg-white">
+      <section className="relative mt-4 md:mt-6 h-[54vh] min-h-[280px] w-full overflow-hidden bg-white">
         {carouselItems.map((item, index) => {
           const textGroup = getHeroTextGroup(index);
           const layoutKey = `slide-layout-${index}`;
@@ -432,6 +488,11 @@ export default function Home() {
                 <div className="w-full h-full flex items-stretch gap-3 md:gap-4">
                   {/* ── Image ── */}
                   <div className={`flex-1 h-full relative rounded-xl overflow-hidden ${editorMode ? 'z-30' : ''}`}>
+                    {editorMode && (
+                      <span className="absolute top-1 left-1 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded z-50">
+                        #S{index + 1}
+                      </span>
+                    )}
                     <EditableImage
                       editorKey={`hero-${index}`}
                       src={item?.imageUrl ?? '/image/placeholder.jpg'}
@@ -559,80 +620,56 @@ export default function Home() {
         </div>
       </section>
       {/* Services Section */}
-      <section className="py-20 bg-[#000B58]">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-white">Nos savoir-faire</h2>
-            <p className="text-xl max-w-3xl mx-auto text-white">
-              Depuis 1996, Multi-Pôles accompagne les marques en pharmacie, parapharmacie et cosmétique :
-              conseil, création, fabrication, co-packing et déploiement terrain.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {solutionsLoading ? (
-              Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="bg-white rounded-lg p-8 border border-gray-100 animate-pulse">
-                  <div className="h-12 w-12 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-6 bg-gray-200 rounded mb-3 w-3/4"></div>
-                  <div className="h-16 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                </div>
-              ))
-            ) : (
-              displayedSolutions.map((solution) => {
-                const Icon = solution.icon;
-                return (
-                  <motion.div
-                    key={solution.id}
-                    whileHover={{ y: -8, scale: 1.01 }}
-                    transition={{ duration: 0.25 }}
-                    className="group relative overflow-hidden rounded-2xl bg-white/95 p-8 shadow-lg shadow-black/10 border border-white/60 text-[#000B58] transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:border-yellow/70"
-                  >
-                    <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-yellow/80 via-yellow/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="flex flex-col h-full">
-                      <div className="mb-5 overflow-hidden rounded-xl">
-                        <div className="relative aspect-[4/3] w-full">
-                          <EditableImage
-                            editorKey={`solution-${solution.id}`}
-                            src={solution.image ?? '/image/placeholder.jpg'}
-                            alt={solution.title}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 25vw"
-                            className="object-cover"
-                          />
-                        </div>
+      <section className="pt-4 pb-24 bg-[#000B58]">
+        <div className="w-full px-0">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
+            {geminiCards.map((card, index) => {
+              const n = index + 1;
+              return (
+                <motion.div
+                  key={card.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={editorMode ? {} : { y: -6 }}
+                  className="relative"
+                >
+                  {/* Layer 1 (fond) : image produit remplaçable */}
+                  <div style={{ position: 'absolute', top: '29.3%', left: '10.9%', width: '78.2%', height: '46.1%', overflow: 'hidden', zIndex: 1 }}>
+                    <EditableImage
+                      editorKey={`sf-product-${card.slug}`}
+                      src={card.photo}
+                      alt={`Image produit ${card.slug}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                    />
+                  </div>
+
+                  {/* Layer 2 (dessus) : frame avec trou transparent — JAMAIS editable */}
+                  <Image
+                    src={card.frame}
+                    alt={card.slug}
+                    width={1792}
+                    height={2232}
+                    className="w-full h-auto block relative"
+                    style={{ zIndex: 2, pointerEvents: 'none' }}
+                  />
+
+                  {editorMode && (
+                    <>
+                      <DragZone id={`c${n}-top`} color="#06b6d4" label={`#C${n}-TOP`} init={{ top: 1, left: 2, width: 95, height: 14 }} />
+                      {/* Label visuel zone produit */}
+                      <div style={{ position: 'absolute', top: '27.91%', left: '8.71%', width: '82.81%', height: '50.04%', border: '2px dashed #f59e0b', borderRadius: 20, zIndex: 15, pointerEvents: 'none' }}>
+                        <span style={{ position: 'absolute', top: -14, left: 6, background: '#f59e0b', color: '#fff', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 4 }}>#C{n}-IMG</span>
                       </div>
-                      <div className="mb-5 flex items-center justify-start">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow/20">
-                          <Icon className="w-6 h-6 text-[#000B58]" />
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-bold mb-3">{solution.title}</h3>
-                      <p className="text-[#000B58]/70 mb-6 flex-1 leading-relaxed">{solution.description}</p>
-                      <div className="mb-6 flex flex-wrap gap-2">
-                        {solution.tags.map((tag) => (
-                          <span
-                            key={`${solution.id}-${tag}`}
-                            className="rounded-md border border-[#000B58]/15 bg-[#000B58]/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#000B58]/70"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <Link
-                        href={solution.link}
-                        className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[#000B58] group-hover:text-yellow transition-colors"
-                      >
-                        En savoir plus
-                        <span aria-hidden="true" className="text-base leading-none transition-transform duration-200 group-hover:translate-x-0.5">
-                          →
-                        </span>
-                      </Link>
-                    </div>
-                  </motion.div>
-                );
-              })
-            )}
+                      <DragZone id={`c${n}-txt`} color="#22c55e" label={`#C${n}-TXT`} init={{ top: 80, left: 2, width: 95, height: 18 }} />
+                    </>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
