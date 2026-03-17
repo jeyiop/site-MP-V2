@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -382,6 +382,74 @@ function SlideDivider({ layoutKey, cardWidth, setHeroLayout }: {
   );
 }
 
+function VideoWithIntro() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [phase, setPhase] = useState<'intro' | 'video' | 'outro'>('intro');
+
+  const handlePlay = useCallback(() => {
+    setPhase('video');
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play();
+      }
+    }, 600);
+  }, []);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const onEnded = () => setPhase('outro');
+    vid.addEventListener('ended', onEnded);
+    return () => vid.removeEventListener('ended', onEnded);
+  }, []);
+
+  return (
+    <div className="relative aspect-video w-full bg-black overflow-hidden rounded-xl">
+      {/* Video */}
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        preload="metadata"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${phase === 'video' ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <source src="/video/presentation.mp4" type="video/mp4" />
+      </video>
+
+      {/* Intro overlay (logo + play) */}
+      <div
+        className={`absolute inset-0 flex flex-col items-center justify-center bg-black transition-opacity duration-700 cursor-pointer ${phase === 'intro' ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}`}
+        onClick={handlePlay}
+      >
+        <Image
+          src="/image/logo-video-intro.jpg"
+          alt="Multipoles"
+          width={600}
+          height={338}
+          className="w-full max-w-lg object-contain"
+        />
+        <div className="absolute bottom-8 flex items-center gap-2 text-white/80 text-sm font-semibold animate-pulse">
+          <Play className="w-5 h-5" />
+          <span>Cliquer pour lancer</span>
+        </div>
+      </div>
+
+      {/* Outro overlay (logo fade in) */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center bg-black transition-opacity duration-1000 ${phase === 'outro' ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'}`}
+      >
+        <Image
+          src="/image/logo-video-intro.jpg"
+          alt="Multipoles"
+          width={600}
+          height={338}
+          className="w-full max-w-lg object-contain"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
@@ -395,9 +463,6 @@ export default function Home() {
   }, []);
   useEffect(() => { localStorage.setItem('mp-blue-bg-height', String(blueBgHeight)); }, [blueBgHeight]);
 
-  const presentationVideoUrl = process.env.NEXT_PUBLIC_PRESENTATION_VIDEO_URL;
-  const presentationVideoPoster = process.env.NEXT_PUBLIC_PRESENTATION_VIDEO_POSTER;
-  const presentationVideoType = process.env.NEXT_PUBLIC_PRESENTATION_VIDEO_TYPE ?? 'video/mp4';
 
   // Fetch data from API
   const { data: carouselData, loading: carouselLoading } = useCarousel('fr');
@@ -767,24 +832,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="relative w-full max-w-4xl overflow-hidden rounded-3xl border-2 border-[#000B58]/10 bg-[#000B58]/5 shadow-[0_30px_80px_-40px_rgba(0,11,88,0.35)]"
           >
-            {presentationVideoUrl ? (
-              <video
-                controls
-                preload="metadata"
-                poster={presentationVideoPoster ?? undefined}
-                className="aspect-video w-full bg-black object-cover"
-              >
-                <source src={presentationVideoUrl} type={presentationVideoType} />
-                Votre navigateur ne prend pas en charge la lecture vidéo.
-              </video>
-            ) : (
-              <div className="flex aspect-video w-full flex-col items-center justify-center gap-4 bg-[#000B58]/10 p-8 text-center text-[#000B58]/70">
-                <span className="text-xl font-semibold">Vidéo en cours d'ajout</span>
-                <p className="max-w-md text-sm">
-                  Ajoutez l'URL de votre vidéo dans la variable d'environnement <code className="rounded bg-[#000B58]/10 px-2 py-1">NEXT_PUBLIC_PRESENTATION_VIDEO_URL</code> pour afficher ce contenu.
-                </p>
-              </div>
-            )}
+            <VideoWithIntro />
 
             <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/30" />
           </motion.div>
