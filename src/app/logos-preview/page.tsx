@@ -1,12 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { Button } from '@/components/ui/button';
 
-export const metadata = {
-    title: 'Choix du Logo - Multipôles',
-    description: 'Prévisualisation des 3 logos en situation',
-};
 
 export default function LogosPreviewPage() {
     const logos = [

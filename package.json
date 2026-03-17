@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.79.0",
     "@headlessui/react": "^2.2.2",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@react-three/drei": "^10.0.7",
