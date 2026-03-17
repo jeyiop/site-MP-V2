@@ -1,8 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
+import { EditableImage } from '@/components/EditableImage';
 
 const SOLUTIONS = [
   {
@@ -10,28 +10,28 @@ const SOLUTIONS = [
     description:
       "Conception, prototypage et fabrication de dispositifs PLV qui épousent parfaitement votre univers de marque. Nos bureaux d'études internalisés garantissent un accompagnement complet, du volume maquette aux séries finales.",
     badge: 'PLV',
-    image: '/images/solutions/plv.jpg',
+    image: '/image/selecta/savoir-faire/card-plv.png',
   },
   {
     title: 'Packaging premium',
     description:
       'Étuis, coffrets, calages et habillages pensés pour sublimer vos produits. Nous combinons savoir-faire artisanal et procédés industriels pour des packagings durables, élégants et performants.',
     badge: 'Packaging',
-    image: '/images/solutions/packaging.jpg',
+    image: '/image/selecta/savoir-faire/card-packaging.png',
   },
   {
     title: 'Impression et finition',
     description:
-      'Offset, numérique, sérigraphie… Nos ateliers délivrent des impressions haute fidélité et des finitions spéciales (dorure, gaufrage, vernis sélectif) qui renforcent l’impact de vos supports.',
+      "Offset, numérique, sérigraphie… Nos ateliers délivrent des impressions haute fidélité et des finitions spéciales (dorure, gaufrage, vernis sélectif) qui renforcent l'impact de vos supports.",
     badge: 'Impression',
-    image: '/images/solutions/impression.jpg',
+    image: '/image/selecta/savoir-faire/card-print.png',
   },
   {
     title: 'Devis 3D Studio',
     description:
       'Configurez votre PLV en 3D (dimensions, niveau de chargement, implantation produit) puis transmettez directement votre brief pour chiffrage technique.',
     badge: '3D Studio',
-    image: '/images/solutions/digital.jpg',
+    image: '/image/selecta/savoir-faire/card-etuis-pharma.png',
   },
 ];
 
@@ -51,7 +51,7 @@ export default function Solutions() {
                 Solutions PLV & Packaging
               </h1>
               <p className="text-base md:text-lg leading-relaxed text-[#000B58]/70">
-                Notre offre couvre la chaîne complète: bureau d’études, prototypage, production série, conditionnement et déploiement.
+                Notre offre couvre la chaîne complète: bureau d'études, prototypage, production série, conditionnement et déploiement.
               </p>
             </motion.div>
           </div>
@@ -75,16 +75,16 @@ export default function Solutions() {
                 }`}
               >
                 <div
-                  className={`relative order-1 overflow-hidden rounded-lg bg-[#F3F5FB] ${
+                  className={`relative order-1 overflow-hidden rounded-lg bg-[#F3F5FB] aspect-[14/9] ${
                     index % 2 === 0 ? '' : 'lg:order-2'
                   }`}
                 >
-                  <Image
+                  <EditableImage
+                    editorKey={`sol-${solution.badge.toLowerCase().replace(/\s+/g, '-')}`}
                     src={solution.image}
                     alt={solution.title}
-                    width={1400}
-                    height={900}
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
                     sizes="(min-width: 1280px) 55vw, (min-width: 768px) 70vw, 100vw"
                     priority={index === 0}
                   />
