@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const MEDIA_ROOT = path.join('E:', 'Dropbox', '1\uD83D\uDCBC_MULTIPOLES', 'Media');
+const MEDIA_ROOT = process.env.MEDIA_ROOT || path.join(process.cwd(), 'public', 'media');
 
 const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif']);
 
