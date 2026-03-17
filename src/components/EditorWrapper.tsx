@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
+import savedOverrides from '@/data/editor-overrides.json';
 
 // ─── Types ───────────────────────────────────────────────────
 export interface ImageTransform { scale: number; x: number; y: number }
@@ -294,13 +295,13 @@ function EditorToggle() {
 // ─── Wrapper (provider + toggle) ────────────────────────────
 export function EditorWrapper({ children }: { children: ReactNode }) {
   const [editorMode, setEditorMode]             = useState(false);
-  const [imageOverrides, setImageOverrides]     = useState<Record<string, string>>({});
-  const [textOverrides, setTextOverrides]       = useState<Record<string, string>>({});
-  const [imageTransforms, setImageTransformsState] = useState<Record<string, ImageTransform>>({});
-  const [heroLayouts, setHeroLayoutsState]      = useState<Record<string, number>>({});
-  const [imageFilters, setImageFiltersState]    = useState<Record<string, ImageFilter>>({});
-  const [frameSizes, setFrameSizesState]        = useState<Record<string, FrameSize>>({});
-  const [freeBlocks, setFreeBlocksState]        = useState<FreeBlock[]>([]);
+  const [imageOverrides, setImageOverrides]     = useState<Record<string, string>>(savedOverrides.imageOverrides ?? {});
+  const [textOverrides, setTextOverrides]       = useState<Record<string, string>>(savedOverrides.textOverrides ?? {});
+  const [imageTransforms, setImageTransformsState] = useState<Record<string, ImageTransform>>((savedOverrides.imageTransforms ?? {}) as Record<string, ImageTransform>);
+  const [heroLayouts, setHeroLayoutsState]      = useState<Record<string, number>>(savedOverrides.heroLayouts ?? {});
+  const [imageFilters, setImageFiltersState]    = useState<Record<string, ImageFilter>>((savedOverrides.imageFilters ?? {}) as Record<string, ImageFilter>);
+  const [frameSizes, setFrameSizesState]        = useState<Record<string, FrameSize>>((savedOverrides.frameSizes ?? {}) as Record<string, FrameSize>);
+  const [freeBlocks, setFreeBlocksState]        = useState<FreeBlock[]>((savedOverrides.freeBlocks ?? []) as FreeBlock[]);
 
   // ── Load from server JSON (saved overrides) then localStorage ─
   useEffect(() => {
