@@ -1,0 +1,237 @@
+{
+  "imageOverrides": {
+    "header-logo": "/image/production/header-logo.png",
+    "hero-0": "/image/production/hero-0.png",
+    "hero-1": "/image/production/hero-1.png",
+    "hero-2": "/image/production/hero-2.png",
+    "hero-3": "/image/production/hero-3.png",
+    "hero-4": "/image/production/hero-4.png",
+    "hero-5": "/image/production/hero-5.jpg",
+    "hero-6": "/image/production/hero-6.png",
+    "solution-print": "/image/production/solution-print.png",
+    "solution-packaging": "/image/selecta/hero/hero-07.png",
+    "solution-plv": "/image/production/solution-plv.png",
+    "vitrine-v3": "/image/production/vitrine-v3.jpg",
+    "vitrine-v4": "/image/selecta/hero/hero-04.jpg",
+    "b4-logo": "/image/production/b4-logo.png",
+    "b4h-hero-1": "/image/production/b4h-hero-1.png",
+    "sf-img-print": "/image/production/sf-img-print.png",
+    "sf-product-print": "/image/production/sf-product-print.png",
+    "sf-product-packaging": "/image/production/sf-product-packaging.png",
+    "vitrine-1": "/image/selecta/hero/hero-04.jpg",
+    "vitrine-2": "/image/production/vitrine-2.png",
+    "vitrine-3": "/image/production/vitrine-3.png",
+    "vitrine-4": "/image/production/vitrine-4.png",
+    "vitrine-5": "/image/production/vitrine-5.png",
+    "vitrine-6": "/image/production/vitrine-6.png",
+    "vitrine-7": "/image/production/vitrine-7.png",
+    "vitrine-8": "/image/production/vitrine-8.png",
+    "vitrine-11": "/image/production/vitrine-11.png",
+    "vitrine-9": "/image/production/vitrine-9.png",
+    "vitrine-10": "/image/production/vitrine-10.png",
+    "vitrine-12": "/image/production/vitrine-12.png",
+    "vitrine-13": "/image/production/vitrine-13.png",
+    "vitrine-14": "/image/production/vitrine-14.png",
+    "vitrine-15": "/image/production/vitrine-15.png",
+    "vitrine-16": "/image/production/vitrine-16.png",
+    "sol-plv": "/image/production/sol-plv.png",
+    "sol-packaging": "/image/production/sol-packaging.png",
+    "sol-impression": "/image/production/sol-impression.png",
+    "sol-3d-studio": "/image/production/sol-3d-studio.png"
+  },
+  "textOverrides": {
+    "hero-title-6": "L’excellence en point de vente pharmacie",
+    "hero-title-0": "MULTIPÔLES",
+    "hero-subtitle-0": "Multipôles est un G.I.E — Groupement d'Intérêt Économique — composé de plusieurs pôles spécialisés dans la création et la fabrication de supports de communication, d'emballage et de PLV. Implantés depuis 1995, nous mettons notre expertise au service des industries pharmaceutique et cosmétique.",
+    "hero-details-0": "Notre gamme couvre l'intégralité des besoins en communication point de vente et conditionnement :",
+    "hero-point-0-1": "PLV, ILV & présentoirs sur mesure",
+    "hero-point-0-2": "Packaging pharmaceutique & cosmétique",
+    "hero-metric-0": "EXPERTISE MÉTIER DEPUIS 1995",
+    "hero-point-0-0": "Étuis pharmaceutiques & boîtes carton",
+    "hero-title-1": "Packaging éco-responsable & premium",
+    "hero-subtitle-1": "Specialists du conditionnement cosmétique haut de gamme, nous concevons des packagings qui allient naturalité, éco-responsabilité et identité de marque forte.",
+    "hero-details-1": "Cartons certifiés PEFC/FSC, encres végétales, finitions nobles : notre expertise au service des marques cosmétiques exigeantes.",
+    "hero-point-1-0": "Étuis & boîtes cosmétiques sur mesure",
+    "hero-point-1-1": "Cartons & papiers certifiés PEFC / FSC",
+    "hero-point-1-2": "Finitions premium : pelliculage, gaufrage, dorure",
+    "hero-metric-1": "NATURALITÉ • ÉLÉGANCE • RESPONSABILITÉ",
+    "hero-title-2": "Packaging pharmaceutique & médical",
+    "hero-subtitle-2": "Experts en étuis et conditionnements pharmaceutiques, nous garantissons conformité réglementaire et qualité d'impression sur chaque référence.",
+    "hero-details-2": "Du blistervac aux tuâbes et étuis carton, nous maîtrisons toute la chaîne du conditionnement pharma — conception, BAT, impression et façonnage.",
+    "hero-point-2-0": "Étuis carton & boites pharma sur mesure",
+    "hero-point-2-1": "Impression offset & numérique haute définition",
+    "hero-point-2-2": "Conformité réglementaire & mentions légales",
+    "hero-metric-2": "RIGUEUR • CONFORMITÉ • PRÉCISION",
+    "hero-subtitle-3": "Visualisez votre projet en gabarit 3D avant impression : étuis, boîtes, PLV — modélisés en kraft pour valider volumes et structures.",
+    "hero-details-3": "En quelques clics, configurez votre structure, renseignez vos dimensions et recevez un devis précis adapté à votre production.",
+    "hero-title-4": "PLV de comptoir cosmétique & pharmacie",
+    "hero-subtitle-4": "Présentoirs de comptoir personnalisés pour la cosmétique et la pharmacie : valorisez vos produits avec des PLV carton élégantes et fonctionnelles.",
+    "hero-details-4": "Conception structurelle, impression et façonnage inclus : un partenaire unique pour vos PLV, de la création au point de vente.",
+    "hero-point-4-0": "Présentoirs de comptoir personnalisés",
+    "hero-point-4-1": "Displays pharmacie & parapharmacie",
+    "hero-point-4-2": "Assemblage & conditionnement inclus",
+    "hero-metric-4": "VISIBILITÉ • SÉDUCTION • PERFORMANCE",
+    "hero-title-5": "Notre catalogue de structures carton",
+    "hero-subtitle-5": "Du simple étui fond automatique à la PLV de sol gran format : découvrez notre gamme complète de structures carton kraft.",
+    "hero-details-5": "30 ans de savoir-faire cartonnier : nos gabarits standards sont disponibles en catalogue ou adaptables à vos contraintes métier.",
+    "hero-point-5-0": "Étuis, fourreaux & coffrets carton",
+    "hero-point-5-1": "PLV de sol & présentoirs à gradin",
+    "hero-point-5-2": "Structures sur mesure & gabarits exclusifs",
+    "hero-metric-5": "ÉTUIS • PLV • FOURREAUX • COFFRETS",
+    "hero-subtitle-6": "Packaging, PLV et mobilier de rayon : MULTIPÔLES accompagne les pharmacies et parapharmacies dans la mise en valeur premium de leurs produits."
+  },
+  "imageTransforms": {
+    "hero-0": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "hero-1": {
+      "scale": 1,
+      "x": -1.5539305301645339,
+      "y": -6.42723925206829
+    },
+    "header-logo": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "hero-5": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "hero-3": {
+      "scale": 1,
+      "x": -3.125,
+      "y": -0.29578961963303385
+    },
+    "solution-packaging": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "solution-digital": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "hero-4": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-v2": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "b4h-hero-0": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "b4h-hero-2__fit": {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+      "fit": "cover"
+    },
+    "b4h-hero-2": {
+      "scale": 1,
+      "x": 0,
+      "y": 50
+    },
+    "b4-logo": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "b4h-hero-1": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "sf-bas-packaging__fit": {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+      "fit": "contain"
+    },
+    "sf-img-print": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "sf-product-packaging": {
+      "scale": 1,
+      "x": -2.750059680114586,
+      "y": 12.069189751593184
+    },
+    "sf-product-plv": {
+      "scale": 1.2,
+      "x": 50,
+      "y": 0
+    },
+    "vitrine-3__fit": {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+      "fit": "cover"
+    },
+    "vitrine-3": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-4": {
+      "scale": 1,
+      "x": -42.877492877492884,
+      "y": -6.8931714845868255
+    },
+    "vitrine-12": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-2": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-15": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-14": {
+      "scale": 1.4,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-16": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "heroLayouts": {
+    "slide-layout-1": 481
+  },
+  "imageFilters": {},
+  "frameSizes": {
+    "sf-bas-packaging": {
+      "w": 393.25,
+      "h": 374.40625
+    },
+    "hero-5": {
+      "w": 1072,
+      "h": 637.15625
+    },
+    "vitrine-4": {
+      "w": 356,
+      "h": 267
+    }
+  },
+  "freeBlocks": []
+}
