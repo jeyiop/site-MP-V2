@@ -177,6 +177,29 @@ const Header = () => {
             </motion.div>
           </motion.div>
 
+          <span className="hidden md:block h-8 w-px bg-[#000B58]/15 shrink-0" aria-hidden="true" />
+
+          {/* ── Imprim'Vert + PEFC FSC ── */}
+          <motion.div
+            variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+            className="hidden md:flex items-center gap-3 shrink-0"
+          >
+            <div className="relative h-14 w-14">
+              <EditableImage
+                editorKey="header-imprim-vert"
+                src="/image/selecta/logo/imprim-vert-badge.webp"
+                alt="Imprim'Vert"
+                fill
+                compact
+                className="object-contain"
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] font-bold tracking-[0.15em] text-[#000B58]/70 leading-tight">PEFC</span>
+              <span className="text-[10px] font-bold tracking-[0.15em] text-[#000B58]/70 leading-tight">FSC</span>
+            </div>
+          </motion.div>
+
           <motion.button
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
             className="md:hidden text-[#000B58] focus:outline-none ml-auto"
@@ -209,14 +232,11 @@ const Header = () => {
               <Link href="/solutions" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Solutions
               </Link>
-              <Link href="/realisations" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
+              <Link href="/#realisations" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Réalisations
               </Link>
               <Link href="/apropos" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 À propos
-              </Link>
-              <Link href="/blog" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
-                Blog
               </Link>
               <Link href="/contact" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Contact
@@ -242,9 +262,8 @@ function NavigationMenuDemo() {
   const navLinks = [
     { label: 'Accueil', href: '/' },
     { label: 'Solutions', href: '/solutions' },
-    { label: 'Réalisations', href: '/realisations' },
+    { label: 'Réalisations', href: '/#realisations' },
     { label: 'À propos', href: '/apropos' },
-    { label: 'Blog', href: '/blog' },
     { label: 'Contact', href: '/contact' },
   ] as const;
 

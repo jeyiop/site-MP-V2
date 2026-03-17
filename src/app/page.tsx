@@ -684,7 +684,7 @@ export default function Home() {
       </section>
 
       {/* Vitrine — grille 4x4 images editables */}
-      <section className="relative bg-white pt-44 pb-20">
+      <section id="realisations" className="relative bg-white pt-44 pb-20">
         {/* Fond bleu qui descend depuis la section categories — hauteur editable */}
         <div className="absolute inset-x-0 top-0 bg-[#000B58]" style={{ height: blueBgHeight }}>
           {editorMode && (
