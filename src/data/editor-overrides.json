@@ -20,10 +20,33 @@
     "b4h-hero-1": "/api/media/serve?path=logo%2020206%20multipoles%2Flogo%20mp%20blanc%20.png",
     "sf-img-print": "/api/media/serve?path=IA%20IMAGE%20MP%2FPrint%20Chromi.png",
     "sf-product-print": "/api/media/serve?path=IA%20IMAGE%20MP%2FPrint%20Chromi.png",
-    "sf-product-packaging": "/api/media/serve?path=IA%20IMAGE%20MP%2FPLV%20BLEU%2003.png"
+    "sf-product-packaging": "/api/media/serve?path=IA%20IMAGE%20MP%2FPLV%20BLEU%2003.png",
+    "vitrine-1": "/image/selecta/hero/hero-04.jpg",
+    "vitrine-2": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PACK%2002.png",
+    "vitrine-3": "/api/media/serve?path=IA%20IMAGE%20MP%2FMelnage%20MP%2005.png",
+    "vitrine-4": "/api/media/serve?path=Classic%2FGemini_Generated_Image_nysoaknysoaknyso.png",
+    "vitrine-5": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PLV%2001.png",
+    "vitrine-6": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PACK%2004.png",
+    "vitrine-7": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PACK%2002.png",
+    "vitrine-8": "/api/media/serve?path=IA%20IMAGE%20MP%2Fpre%20comptoir%2005.png",
+    "vitrine-11": "/api/media/serve?path=IA%20IMAGE%20MP%2FPACK%20%26%20tube.png",
+    "vitrine-9": "/api/media/serve?path=Kraft%20Style%2F10_Gemini_Generated_Image_bzmqjkbzmqjkbzmq.png",
+    "vitrine-10": "/api/media/serve?path=Kraft%20Style%2FGemini_Generated_Image_d20d64d20d64d20d.png",
+    "vitrine-12": "/api/media/serve?path=Kraft%20Style%2FGemini_Generated_Image_fehutwfehutwfehu.png",
+    "vitrine-13": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PLV%2003.png",
+    "vitrine-14": "/api/media/serve?path=Cosmetique%2F19_Gemini_Generated_Image_kfeoc6kfeoc6kfeo.png",
+    "vitrine-15": "/api/media/serve?path=Cosmetique%2F20_Gemini_Generated_Image_nl0elnl0elnl0eln.png",
+    "vitrine-16": "/api/media/serve?path=IA%20IMAGE%20MP%2FSCENO%20PLV%2004.png"
   },
   "textOverrides": {
-    "hero-title-6": "MULTIPÔLES                        G.I.E"
+    "hero-title-6": "MULTIPÔLES                        G.I.E",
+    "hero-title-0": "G.I.E",
+    "hero-subtitle-0": "Multipôles est un G.I.E — Groupement d'Intérêt Économique — composé de plusieurs pôles spécialisés dans la création et la fabrication de supports de communication, d'emballage et de PLV. Implantés depuis 1995, nous mettons notre expertise au service des industries pharmaceutique et cosmétique.",
+    "hero-details-0": "Notre gamme couvre l'intégralité des besoins en communication point de vente et conditionnement :",
+    "hero-point-0-1": "PLV, ILV & présentoirs sur mesure",
+    "hero-point-0-2": "Packaging pharmaceutique & cosmétique",
+    "hero-metric-0": "EXPERTISE MÉTIER DEPUIS 1995",
+    "hero-point-0-0": "Étuis pharmaceutiques & boîtes carton"
   },
   "imageTransforms": {
     "hero-0": {
@@ -117,9 +140,52 @@
       "scale": 1.2,
       "x": 50,
       "y": 0
+    },
+    "vitrine-3__fit": {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+      "fit": "cover"
+    },
+    "vitrine-3": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-4": {
+      "scale": 1,
+      "x": -42.877492877492884,
+      "y": -6.8931714845868255
+    },
+    "vitrine-12": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-2": {
+      "scale": 1,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-15": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-14": {
+      "scale": 1.4,
+      "x": 0,
+      "y": 0
+    },
+    "vitrine-16": {
+      "scale": 1.2,
+      "x": 0,
+      "y": 0
     }
   },
-  "heroLayouts": {},
+  "heroLayouts": {
+    "slide-layout-1": 481
+  },
   "imageFilters": {},
   "frameSizes": {
     "sf-bas-packaging": {
@@ -129,6 +195,10 @@
     "hero-5": {
       "w": 1072,
       "h": 637.15625
+    },
+    "vitrine-4": {
+      "w": 356,
+      "h": 267
     }
   },
   "freeBlocks": []

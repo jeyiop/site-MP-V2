@@ -165,14 +165,14 @@ const Header = () => {
             </a>
           </motion.div>
 
-          {/* ── CTA Simulateur ── */}
+          {/* ── CTA Devis 3D ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
             className="hidden md:flex items-center shrink-0"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button asChild variant="outline" className="border-[#000B58] text-[#000B58] hover:bg-[#000B58]/10 hover:text-[#000B58] bg-transparent">
-                <Link href="/simulateur">Simulateur</Link>
+              <Button asChild className="bg-[#000B58] text-white hover:bg-[#000B58]/90 border-2 border-[#D4A017] font-black tracking-wider text-sm px-6 py-2 shadow-lg">
+                <Link href="/simulateur">DEVIS 3D</Link>
               </Button>
             </motion.div>
           </motion.div>
@@ -223,9 +223,9 @@ const Header = () => {
               </Link>
               <Link
                 href="/simulateur"
-                className="border border-[#000B58] text-[#000B58] font-semibold px-5 py-2 rounded-md hover:bg-[#000B58]/10 transition-colors text-center"
+                className="border-2 border-[#D4A017] bg-[#000B58] text-white font-black px-5 py-2 rounded-md hover:bg-[#000B58]/90 transition-colors text-center tracking-wider text-sm shadow-lg"
               >
-                Simulateur
+                DEVIS 3D
               </Link>
             </div>
           </motion.div>
