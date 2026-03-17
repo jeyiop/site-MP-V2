@@ -509,7 +509,7 @@ export default function Home() {
                       priority={index === 0}
                       sizes="(max-width: 768px) 100vw, 50vw"
                       quality={95}
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
                   {/* ── Drag divider (editor only) ── */}
