@@ -213,9 +213,13 @@ function FreeBlockComp({ block, editable, selected, onSelect, onUpdate, onDelete
 
 // ─────────────────────────────────────────────────────────────────
 export function EditorBlockLayer() {
-  const { editorMode, freeBlocks, addFreeBlock, updateFreeBlock, deleteFreeBlock } = useEditor();
+  const { editorMode, currentPage, freeBlocks, addFreeBlock, updateFreeBlock, deleteFreeBlock } = useEditor();
   const [showPicker, setShowPicker] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Filter blocks to only show those belonging to the current page
+  // Blocks without a page property are treated as belonging to '/' for backward compatibility
+  const pageBlocks = freeBlocks.filter(b => (b.page ?? '/') === currentPage);
 
   useEffect(() => {
     if (!editorMode) return;
@@ -231,8 +235,8 @@ export function EditorBlockLayer() {
 
   return (
     <>
-      {/* Blocks — ALWAYS rendered regardless of editorMode, via portal to body */}
-      {freeBlocks.map(block => (
+      {/* Blocks — ALWAYS rendered regardless of editorMode, via portal to body (filtered by current page) */}
+      {pageBlocks.map(block => (
         <FreeBlockComp
           key={block.id}
           block={block}
@@ -281,6 +285,7 @@ export function EditorBlockLayer() {
       textColor: '#000B58', textAlign: 'left',
       bgColor: type === 'image' ? '#e8edf5' : '#ffffff',
       borderRadius: 8, padding: 16, opacity: 1,
+      page: currentPage,
     });
     setSelectedId(null);
     setShowPicker(false);

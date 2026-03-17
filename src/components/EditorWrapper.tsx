@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import savedOverrides from '@/data/editor-overrides.json';
 
@@ -32,10 +33,12 @@ export interface FreeBlock {
   borderRadius?: number;
   padding?: number;
   opacity?: number;
+  page?: string;
 }
 
 interface EditorContextType {
   editorMode: boolean;
+  currentPage: string;
   imageOverrides: Record<string, string>;
   textOverrides: Record<string, string>;
   imageTransforms: Record<string, ImageTransform>;
@@ -294,6 +297,7 @@ function EditorToggle() {
 
 // ─── Wrapper (provider + toggle) ────────────────────────────
 export function EditorWrapper({ children }: { children: ReactNode }) {
+  const currentPage = usePathname() || '/';
   const [editorMode, setEditorMode]             = useState(false);
   const [imageOverrides, setImageOverrides]     = useState<Record<string, string>>(savedOverrides.imageOverrides ?? {});
   const [textOverrides, setTextOverrides]       = useState<Record<string, string>>(savedOverrides.textOverrides ?? {});
@@ -412,7 +416,7 @@ export function EditorWrapper({ children }: { children: ReactNode }) {
 
   return (
     <EditorContext.Provider value={{
-      editorMode, imageOverrides, textOverrides, imageTransforms, heroLayouts,
+      editorMode, currentPage, imageOverrides, textOverrides, imageTransforms, heroLayouts,
       imageFilters, frameSizes, freeBlocks,
       toggleEditor, setImageOverride, setTextOverride, setImageTransform, setHeroLayout,
       setImageFilter, setFrameSize, addFreeBlock, updateFreeBlock, deleteFreeBlock,

@@ -148,7 +148,11 @@ export function EditableText({
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || isFocusedRef.current) return;
-    if (el.textContent !== currentValue) el.textContent = currentValue;
+    if (el.textContent !== currentValue) {
+      const computedAlign = window.getComputedStyle(el).textAlign;
+      el.textContent = currentValue;
+      if (computedAlign) el.style.textAlign = computedAlign;
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorMode, currentValue]);
 
@@ -163,11 +167,17 @@ export function EditableText({
     setShowToolbar(false);
     const el = ref.current;
     if (!el) return;
+    // Preserve the computed text-align before resetting textContent
+    const computedAlign = window.getComputedStyle(el).textAlign;
     const newValue = (el.textContent ?? '').trim() || savedValueRef.current;
     if (newValue !== savedValueRef.current) {
       setTextOverride(editorKey, newValue);
     }
     el.textContent = newValue;
+    // Restore text-align that was lost when textContent was set
+    if (computedAlign) {
+      el.style.textAlign = computedAlign;
+    }
   }, [editorKey, setTextOverride]);
 
   const handleKeyDown = useCallback(
@@ -175,7 +185,11 @@ export function EditableText({
       if (e.key === 'Escape') {
         e.preventDefault();
         const el = ref.current;
-        if (el) el.textContent = savedValueRef.current;
+        if (el) {
+          const computedAlign = window.getComputedStyle(el).textAlign;
+          el.textContent = savedValueRef.current;
+          if (computedAlign) el.style.textAlign = computedAlign;
+        }
         isFocusedRef.current = false;
         setShowToolbar(false);
         ref.current?.blur();
