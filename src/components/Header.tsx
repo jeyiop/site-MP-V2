@@ -118,11 +118,11 @@ const Header = () => {
               },
             },
           }}
-          className="flex w-full items-center h-[5.5rem] md:h-[6rem] gap-4 md:gap-6"
+          className="flex w-full items-center h-[5.5rem] lg:h-[6rem] gap-4 lg:gap-5"
         >
           {/* ── Logo ── */}
           <motion.div variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }} className="flex items-center shrink-0">
-            <div className="relative flex h-[5.5rem] w-40 md:h-24 md:w-52 items-center justify-center">
+            <div className="relative flex h-[5.5rem] w-40 lg:h-24 lg:w-44 items-center justify-center">
               {!editorMode && <Link href="/" className="absolute inset-0 z-20" aria-label="Accueil" />}
               <EditableImage
                 editorKey="header-logo"
@@ -139,19 +139,19 @@ const Header = () => {
           {/* ── Slogan Pyramide ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="hidden md:flex flex-col items-center justify-center shrink-0 ml-3 mr-1"
+            className="hidden xl:flex flex-col items-center justify-center shrink-0 ml-2 mr-1"
           >
             <span className="text-lg font-black tracking-[0.18em] text-[#000B58] leading-none">IMPRIMEUR</span>
             <span className="text-xs font-semibold tracking-[0.08em] text-[#000B58]/65 leading-none mt-1">CARTONNIER VOLUMISTE</span>
             <span className="text-[11px] font-bold tracking-[0.32em] mt-1.5" style={{background: 'linear-gradient(135deg, #6B7A8D 0%, #8C96A4 35%, #4A5568 70%, #7B8794 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '0.32em'}}>depuis 1995</span>
           </motion.div>
 
-          <span className="hidden md:block h-8 w-px bg-[#000B58]/15 shrink-0" aria-hidden="true" />
+          <span className="hidden xl:block h-8 w-px bg-[#000B58]/15 shrink-0" aria-hidden="true" />
 
           {/* ── Nav centre + Téléphone ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="hidden md:flex flex-1 items-center justify-center gap-6 pointer-events-auto"
+            className="hidden xl:flex flex-1 items-center justify-center gap-4 pointer-events-auto"
           >
             <NavigationMenuDemo />
             <a
@@ -168,7 +168,7 @@ const Header = () => {
           {/* ── CTA Devis 3D ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="hidden md:flex items-center shrink-0"
+            className="hidden xl:flex items-center shrink-0"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button asChild className="bg-[#000B58] text-white hover:bg-[#000B58]/90 border-2 border-[#D4A017] font-black tracking-wider text-sm px-6 py-2 shadow-lg">
@@ -177,12 +177,12 @@ const Header = () => {
             </motion.div>
           </motion.div>
 
-          <span className="hidden md:block h-8 w-px bg-[#000B58]/15 shrink-0" aria-hidden="true" />
+          <span className="hidden xl:block h-8 w-px bg-[#000B58]/15 shrink-0" aria-hidden="true" />
 
           {/* ── Imprim'Vert + PEFC FSC ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="hidden md:flex items-center gap-3 shrink-0"
+            className="hidden xl:flex items-center gap-3 shrink-0"
           >
             <div className="relative h-14 w-14">
               <EditableImage
@@ -202,7 +202,7 @@ const Header = () => {
 
           <motion.button
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="md:hidden text-[#000B58] focus:outline-none ml-auto"
+            className="xl:hidden text-[#000B58] focus:outline-none ml-auto"
             onClick={toggleMobileMenu}
             aria-label="Ouvrir le menu"
           >
@@ -223,7 +223,7 @@ const Header = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-white shadow-lg absolute top-full left-0 right-0 py-4"
+            className="xl:hidden bg-white shadow-lg absolute top-full left-0 right-0 py-4"
           >
             <div className="container mx-auto px-4 flex flex-col space-y-4">
               <Link href="/" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
