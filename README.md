@@ -1,193 +1,195 @@
-# Multipoles — Site Vitrine V3
+# Multi-Poles — Site Vitrine
 
-Site web professionnel pour **[Multipoles](https://multi-poles.net)**, spécialiste PLV (Publicité sur Lieu de Vente), packaging haut de gamme et structures volumétriques en carton depuis 1985.
+Site web professionnel pour **Multi-Poles**, GIE specialise PLV, packaging et impression pour la cosmetique et la pharmacie depuis 1995.
 
----
-
-## Aperçu
-
-| | |
-|---|---|
-| **Framework** | Next.js 15.5 (App Router + Turbopack) |
-| **Langage** | TypeScript |
-| **Style** | Tailwind CSS v4 |
-| **3D** | Three.js 0.170 (via importmap CDN) |
-| **React** | 19 |
-| **Port dev** | `3002` |
+**URL live** : https://multi-poles.cloud
+**Repo** : https://github.com/jeyiop/site-MP-V2
 
 ---
 
-## Installation et démarrage
+## Demarrage rapide
 
 ```bash
-# Cloner le repo
-git clone https://github.com/jeyiop/sitempv3.git
-cd sitempv3
+# Cloner
+git clone git@github.com:jeyiop/site-MP-V2.git SiteMP_CODEX
+cd SiteMP_CODEX
 
-# Installer les dépendances
+# Installer
 npm install
 
-# Lancer en développement
-npm run dev
+# Lancer en dev
+npm run dev -- --port 3002
 # → http://localhost:3002
-
-# Build production
-npm run build
-npm run start
 ```
+
+---
+
+## Stack technique
+
+| Tech | Version |
+|------|---------|
+| Next.js | 15.5.6 (App Router + Turbopack) |
+| React | 19 |
+| TypeScript | 5.9 |
+| Tailwind CSS | v4 |
+| Framer Motion | 12 |
+| Three.js | 0.170 (studio 3D standalone) |
 
 ---
 
 ## Pages
 
-| Route | Description |
-|---|---|
-| `/` | Accueil — carousel hero, savoir-faire, vitrine produits |
-| `/solutions` | Solutions PLV, packaging carton, imprimerie |
-| `/realisations` | Galerie de réalisations clients |
-| `/simulateur` | **Studio 3D** PLV & Packaging interactif |
-| `/apropos` | Histoire et équipe Multipoles |
-| `/blog` | Articles, actualités métier |
-| `/contact` | Formulaire de contact |
-| `/devis` | Demande de devis en ligne |
+| Route | Description | Editable |
+|-------|-------------|----------|
+| `/` | Accueil — carousel hero 7 slides, categories, vitrine 16 images, video, FAQ | Oui |
+| `/solutions` | 4 solutions (PLV, Packaging, Impression, Devis 3D) | Oui |
+| `/apropos` | Histoire, valeurs, certifications | Oui |
+| `/simulateur` | Studio 3D PLV & Packaging (iframe studio-3d.html) | Via studio |
+| `/contact` | Formulaire de contact | Non |
+| `/devis` | Demande de devis | Non |
 
 ---
 
-## Éditeur visuel intégré
-
-Un éditeur no-code embarqué permet de personnaliser le site sans toucher au code.
+## Editeur visuel
 
 ### Activation
-Bouton **✏️ Éditeur** en bas à droite de toutes les pages.
+Bouton **Editeur** en bas a droite de toutes les pages.
 
-### Fonctionnalités
+### Fonctionnalites
+- **Clic sur image** → galerie pour remplacer (dossiers dans `public/media/`)
+- **Clic sur texte** → edition inline
+- **Zoom/recadrage** → molette + drag sur les images
+- **Blocs libres** → creer des blocs texte/image positionnables (scopes par page)
+- **Sauvegarder** → ecrit dans `/data/editor-overrides.json` (volume Docker en prod)
+- **Export/Import JSON** → backup des modifications
 
-| Fonction | Description |
-|---|---|
-| 🖼️ **Images** | Remplacement via galerie interne ou upload local |
-| ✏️ **Textes** | Édition inline au clic |
-| 🔍 **Zoom/Recadrage** | Ajustement du cadrage de chaque image |
-| 📐 **Layout hero** | Ajustement largeur des cartes par slide |
-| 💾 **Sauvegarde serveur** | Bouton → écrit dans `src/data/editor-overrides.json` |
-| 📤 **Export JSON** | Télécharge toutes les modifications |
-| 📥 **Import JSON** | Restaure des modifications exportées |
+### Conventions editorKey
 
-### API interne éditeur
+| Prefixe | Page |
+|---------|------|
+| `hero-N`, `hero-title-N` | Home (slides) |
+| `sf-product-*`, `vitrine-N` | Home (categories, vitrine) |
+| `sol-*` | Solutions |
+| `apropos-*` | A propos |
+| `header-*` | Header global |
 
-```
-GET  /api/studio/load   → charge les overrides sauvegardés (JSON)
-POST /api/studio/save   → sauvegarde les overrides côté serveur
-```
-
-Les overrides sont persistés dans `src/data/editor-overrides.json` et chargés automatiquement au démarrage.
-
----
-
-## Simulateur 3D
-
-Accessible via `/simulateur` — studio 3D interactif basé sur Three.js, servi comme fichier statique (`public/studio-3d.html`) dans une iframe.
-
-### Fonctionnalités
-- **Mode PLV de sol** — présentoir carton avec configuration étagères, facing, profondeur, fronton
-- **Mode Packaging** — étui tuck-end avec dimensions L×P×H configurables
-- **Fiche devis client** intégrée (société, téléphone, description, quantité, délai)
-- **8 thèmes visuels** : Warm pro, Tech cobalt, Pharma, Pharma clair, Cosmétique, Tech, Jour neutre, Studio neutre
-- **Synthèse automatique** : capacité produits, dimensions totales, surface au sol
-
----
-
-## Structure du projet
+### API editeur
 
 ```
-sitempv3/
-├── src/
-│   ├── app/                        # Pages (App Router)
-│   │   ├── page.tsx                # Accueil
-│   │   ├── layout.tsx              # Layout global
-│   │   ├── globals.css             # Styles globaux
-│   │   ├── simulateur/page.tsx     # Page studio 3D (iframe)
-│   │   ├── realisations/page.tsx   # Galerie réalisations
-│   │   ├── solutions/              # Page solutions
-│   │   ├── apropos/                # Page à propos
-│   │   ├── blog/                   # Blog
-│   │   ├── contact/                # Contact
-│   │   ├── devis/                  # Devis
-│   │   └── api/
-│   │       └── studio/
-│   │           ├── load/route.ts   # GET — charge overrides
-│   │           └── save/route.ts   # POST — sauvegarde overrides
-│   ├── components/
-│   │   ├── EditorWrapper.tsx       # Contexte éditeur + boutons flottants
-│   │   ├── EditableImage.tsx       # Image cliquable + galerie en mode éditeur
-│   │   ├── EditableText.tsx        # Texte éditable inline
-│   │   ├── Header.tsx              # Navigation principale
-│   │   ├── Footer.tsx              # Pied de page
-│   │   ├── RealisationCard.tsx     # Carte réalisation
-│   │   ├── SolutionCard.tsx        # Carte solution
-│   │   └── ...
-│   └── data/
-│       └── editor-overrides.json   # Overrides éditeur (auto-généré)
-│
-└── public/
-    ├── studio-3d.html              # Studio 3D standalone (Three.js)
-    ├── image/
-    │   ├── selecta/                # Photos produits sélectionnées
-    │   │   ├── hero/               # Images carousel accueil
-    │   │   ├── logo/               # Logos
-    │   │   └── savoir-faire/       # Visuels savoir-faire
-    │   └── slider-live-kraft/      # Photos kraft lifestyle
-    └── ...
+GET  /api/studio/load    → charge les overrides
+POST /api/studio/save    → sauvegarde les overrides
+GET  /api/media?dir=...  → liste les images de la bibliotheque
+GET  /api/media/serve?path=...  → sert une image
 ```
 
 ---
 
-## Images et médias
+## Studio 3D
 
-### Inclus dans le repo
-- `public/image/selecta/` — 20 photos sélectionnées pour le site
-- `public/image/slider-live-kraft/` — slider lifestyle kraft
+Fichier standalone : `public/studio-3d.html`
+Accessible via : `/simulateur`
 
-### Exclus du repo (trop volumineux)
-Stockés localement et dans Dropbox : `E:\Dropbox\1💼_MULTIPOLES\Media\`
+### Modes
+- **PLV de sol** — etageres, facing, profondeur, fronton configurable
+- **Packaging** — dimensions boite, impression, finition, papier
 
-| Dossier | Taille |
-|---|---|
-| Base de donnée photo reel | 543 Mo |
-| Kraft Style | 85 Mo |
-| Classic | 52 Mo |
-| CyberTech | 50 Mo |
-| Cosmetique | 15 Mo |
-| Pharma | 15 Mo |
-| Logo & Template | 15 Mo |
+### 5 Themes
+Light Navy (defaut), Full White, Navy Glass, Warm pro, Studio neutre
 
-Pour les utiliser en local, copier dans `public/image/` :
-```bash
-cp -r "E:/Dropbox/1💼_MULTIPOLES/Media/Classic" public/image/classic
-```
+### Fonctionnalites devis
+- Resume du brief automatique
+- Boutons DEMANDE DE PRIX / ENVOYER / upload fichiers
+- Email vers jeremy@multi-poles.net
 
 ---
 
-## Déploiement VPS
+## Images
 
-Le VPS Hostinger (`72.60.45.230`) sert le site via Docker + Traefik.
+### Dossiers
+
+| Dossier | Contenu |
+|---------|---------|
+| `public/image/production/` | Images finales (overrides compresses) |
+| `public/image/selecta/` | Images de base (hero, logo, savoir-faire) |
+| `public/media/` | Bibliotheque editeur (12 dossiers, 90 images) |
+| `public/video/` | Video presentation |
+
+### Compression
+Toutes les images sont compressees avec sharp (max 1920px, quality 85).
+`public/` total : ~143 Mo.
+
+---
+
+## Deploiement production
+
+### VPS Hostinger
+- **IP** : 72.60.45.230
+- **SSH** : `ssh -i ~/.ssh/claude_vps_key root@72.60.45.230` (cle uniquement)
+- **Architecture** : Docker container → Nginx reverse proxy HTTPS
+- **SSL** : Let's Encrypt (auto-renew)
+
+### Commandes de deploiement
 
 ```bash
-# Build
+# 1. Build
 npm run build
 
-# Déployer
-scp -r .next root@72.60.45.230:/docker/multipoles-v3/
+# 2. Transfert
+scp -r -i ~/.ssh/claude_vps_key .next/standalone/.next root@72.60.45.230:/var/www/multi-poles.cloud/app/.next
+scp -r -i ~/.ssh/claude_vps_key .next/static root@72.60.45.230:/var/www/multi-poles.cloud/app/.next/static
+scp -r -i ~/.ssh/claude_vps_key public root@72.60.45.230:/var/www/multi-poles.cloud/app/public
+
+# 3. Fix permissions + rebuild Docker
+ssh -i ~/.ssh/claude_vps_key root@72.60.45.230 "
+  chown -R www-data:www-data /var/www/multi-poles.cloud/app/public/
+  cd /var/www/multi-poles.cloud && docker compose up -d --build
+"
 ```
 
-> ⚠️ **Note** : Le VPS a été compromis (incident XMRig, fév. 2026). À reconfigurer avant déploiement production.
+### Architecture VPS
+```
+Internet → Nginx (HTTPS/443)
+             ├── /image/, /video/ → fichiers statiques (Nginx direct)
+             ├── /_next/static/   → cache immutable (Nginx)
+             └── /*               → Docker container Next.js (port 3000)
+```
+
+### Securite VPS
+- SSH cle uniquement (PasswordAuthentication no)
+- fail2ban (3 essais, ban 24h)
+- UFW (ports 22, 80, 443 uniquement)
+- Docker container isole (mem 512M, cpu 1.5)
+- Headers securite (X-Frame, X-Content-Type, XSS-Protection)
+
+---
+
+## Dossiers du projet
+
+| Dossier | Localisation | Usage |
+|---------|-------------|-------|
+| **SiteMP_CODEX** | `C:\Users\jerem_07fes6p\SiteMP_CODEX\` | Version de travail (dev + deploy) |
+| **BOXSITEMP** | `E:\Dropbox\7_APP_SANDOX\BOXSITEMP\` | Copie offline reference |
+| **BOXSITEMP_OPTIM** | `E:\Dropbox\7_APP_SANDOX\BOXSITEMP_OPTIM\` | Backup pre-optimisation |
+| **ARCHIVES** | `E:\Dropbox\7_APP_SANDOX\ARCHIVES_SITEMP\` | Anciennes versions archivees |
+| **Builder** | `C:\Users\jerem_07fes6p\SiteMP_CODEX_BUILDER\` | Builder offline (port 3003) |
+
+---
+
+## Couleurs
+
+| Usage | Hex |
+|-------|-----|
+| Navy principal | `#000B58` |
+| Fond | `#FFFFFF` |
+| Accent or | `#D4A017` |
+| Accent orange | `#FF6B00` |
 
 ---
 
 ## Entreprise
 
-**Multipoles**  
-53 rue des Deux Communes — 93100 Montreuil  
-📞 01 43 91 17 71 | ✉️ jeremy@multi-poles.net  
-🌐 [multi-poles.net](https://multi-poles.net)
-
-Réseau GIE : Cartoneo (PLV commerciale) · Freller (pharmaceutique/cosmétique)
+**Multi-Poles** — GIE Imprimeur Cartonnier Volumiste
+53 rue des Deux Communes — 93100 Montreuil
+Tel : 01 43 91 17 71
+Email : jeremy@multi-poles.net
+Reseau GIE : Cartoneo (PLV) + Freller (pharma/cosmetique)
