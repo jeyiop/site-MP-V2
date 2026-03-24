@@ -530,6 +530,16 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const mobileTagsBySlide: Record<number, string[]> = {
+    0: ['Pack Pharma', 'Étuis & Coffrets', 'Cosmétique'],
+    1: ['Bureau d\'études', 'Prototype', 'Sur mesure'],
+    2: ['Packaging Pharma', 'Étuis carton', 'Conformité'],
+    3: ['PLV Kraft', 'Présentoir', 'Point de vente'],
+    4: ['Impression', 'Découpe', 'Finitions premium'],
+    5: ['ILV', 'PLV Sol', 'Comptoir'],
+    6: ['Déploiement', 'Campagne retail'],
+  };
+
   const getHeroTextGroup = (slideIndex: number) => {
     const groupIndex = Math.floor(slideIndex / 3);
     return heroTextGroups[groupIndex] ?? heroTextGroups[heroTextGroups.length - 1];
@@ -547,7 +557,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Hero Carousel — plein écran moins le header */}
-      <section className="relative mt-4 md:mt-6 h-[54vh] min-h-[280px] w-full overflow-hidden bg-white">
+      <section className="relative mt-0 md:mt-4 h-[62vh] min-h-[360px] w-full overflow-hidden bg-white">
         {carouselItems.map((item, index) => {
           const textGroup = getHeroTextGroup(index);
           const layoutKey = `slide-layout-${index}`;
@@ -574,8 +584,18 @@ export default function Home() {
                       priority={index === 0}
                       sizes="(max-width: 768px) 100vw, 50vw"
                       quality={95}
-                      className="object-contain"
+                      className="object-cover"
                     />
+                  </div>
+                  {/* ── Overlay mobile : tags en bas sur une ligne ── */}
+                  <div className={`md:hidden absolute inset-x-0 bottom-14 z-20 px-3 transition-all duration-300 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+                      {(mobileTagsBySlide[index] ?? []).map((tag, ti) => (
+                        <span key={ti} className="inline-flex shrink-0 rounded-md border border-white/60 bg-white/15 backdrop-blur-sm px-2.5 py-1 text-[10px] sm:text-[11px] font-semibold text-white tracking-wide whitespace-nowrap">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   {/* ── Drag divider (editor only) ── */}
                   {editorMode && <SlideDivider layoutKey={layoutKey} cardWidth={cardWidth} setHeroLayout={setHeroLayout} />}
@@ -661,19 +681,19 @@ export default function Home() {
         >
           <button
             onClick={prevSlide}
-            className="rounded-lg bg-white p-2 sm:p-2.5 text-[#000B58] shadow-lg shadow-[#000B58]/20 transition-all"
+            className="rounded-lg bg-white p-[7px] sm:p-[9px] text-[#000B58] shadow-lg shadow-[#000B58]/20 transition-all"
             aria-label="Previous slide"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#000B58">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-[19px] w-[19px]" fill="none" viewBox="0 0 24 24" stroke="#000B58">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             onClick={nextSlide}
-            className="rounded-lg bg-white p-2 sm:p-2.5 text-[#000B58] shadow-lg shadow-[#000B58]/20 transition-all"
+            className="rounded-lg bg-white p-[7px] sm:p-[9px] text-[#000B58] shadow-lg shadow-[#000B58]/20 transition-all"
             aria-label="Next slide"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#000B58">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-[19px] w-[19px]" fill="none" viewBox="0 0 24 24" stroke="#000B58">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>

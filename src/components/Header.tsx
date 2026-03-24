@@ -118,11 +118,11 @@ const Header = () => {
               },
             },
           }}
-          className="flex w-full items-center h-[5.5rem] lg:h-[6rem] gap-4 lg:gap-5"
+          className="flex w-full items-center h-[5.5rem] lg:h-[6rem] gap-2 sm:gap-3 lg:gap-5"
         >
           {/* ── Logo ── */}
           <motion.div variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }} className="flex items-center shrink-0">
-            <div className="relative flex h-[5.5rem] w-40 lg:h-24 lg:w-44 items-center justify-center">
+            <div className="relative flex h-[5.5rem] w-28 sm:w-36 lg:h-24 lg:w-44 items-center justify-center">
               {!editorMode && <Link href="/" className="absolute inset-0 z-20" aria-label="Accueil" />}
               <EditableImage
                 editorKey="header-logo"
@@ -139,7 +139,7 @@ const Header = () => {
           {/* ── Slogan Pyramide ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="hidden xl:flex flex-col items-center justify-center shrink-0 ml-2 mr-1"
+            className="hidden xl:flex flex-col items-center justify-center shrink-0 mr-1"
           >
             <span className="text-lg font-black tracking-[0.18em] text-[#000B58] leading-none">IMPRIMEUR</span>
             <span className="text-xs font-semibold tracking-[0.08em] text-[#000B58]/65 leading-none mt-1">CARTONNIER VOLUMISTE</span>
@@ -200,9 +200,31 @@ const Header = () => {
             </div>
           </motion.div>
 
+          {/* ── Mobile : Téléphone + Devis 3D (centré) ── */}
+          <div className="xl:hidden flex-1 flex items-center justify-center min-w-0">
+            <div className="flex flex-col items-center gap-1">
+              <a href="tel:+33143911771" className="flex items-center gap-1.5 text-[#000B58] no-underline">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" />
+                </svg>
+                <span className="text-[13px] sm:text-[15px] font-bold tracking-wide whitespace-nowrap">01 43 91 17 71</span>
+              </a>
+              <Link href="/simulateur" className="inline-flex items-center bg-[#000B58] text-white font-bold text-[11px] sm:text-[12px] tracking-wider px-2.5 py-0.5 rounded border border-[#D4A017]/50 shadow-sm no-underline whitespace-nowrap">
+                Devis 3D
+              </Link>
+            </div>
+          </div>
+
+          {/* ── Mobile : IMPRIMEUR CARTONNIER (à gauche du hamburger) ── */}
+          <div className="xl:hidden flex flex-col items-center justify-center shrink-0">
+            <span className="text-[12px] sm:text-[14px] font-black tracking-[0.12em] text-[#000B58] leading-none">IMPRIMEUR</span>
+            <span className="text-[9px] sm:text-[10px] font-semibold tracking-[0.04em] text-[#000B58]/65 leading-none mt-0.5">CARTONNIER VOLUMISTE</span>
+            <span className="text-[8px] sm:text-[9px] font-bold tracking-[0.12em] mt-0.5" style={{background: 'linear-gradient(135deg, #6B7A8D 0%, #8C96A4 35%, #4A5568 70%, #7B8794 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>depuis 1995</span>
+          </div>
+
           <motion.button
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="xl:hidden text-[#000B58] focus:outline-none ml-auto"
+            className="xl:hidden text-[#000B58] focus:outline-none shrink-0"
             onClick={toggleMobileMenu}
             aria-label="Ouvrir le menu"
           >
@@ -235,9 +257,7 @@ const Header = () => {
               <Link href="/#realisations" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Réalisations
               </Link>
-              <Link href="/apropos" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
-                À propos
-              </Link>
+
               <Link href="/contact" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Contact
               </Link>
@@ -263,7 +283,7 @@ function NavigationMenuDemo() {
     { label: 'Accueil', href: '/' },
     { label: 'Solutions', href: '/solutions' },
     { label: 'Réalisations', href: '/#realisations' },
-    { label: 'À propos', href: '/apropos' },
+
     { label: 'Contact', href: '/contact' },
   ] as const;
 
