@@ -4,7 +4,7 @@ import { join } from 'path';
 
 export async function GET() {
   try {
-    const filePath = join(process.cwd(), 'data', 'editor-overrides.json');
+    const filePath = join(process.cwd(), 'src', 'data', 'editor-overrides.json');
     if (!existsSync(filePath)) return NextResponse.json({});
     const data = JSON.parse(readFileSync(filePath, 'utf-8'));
     return NextResponse.json(data);

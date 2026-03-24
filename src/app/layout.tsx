@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Figtree, Red_Hat_Mono, Manrope, Space_Grotesk, IBM_Plex_Sans, Sora } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header";
+import { ClientHeader } from "../components/ClientHeader";
 import Footer from "../components/Footer";
 import { StructuredData } from "../components/StructuredData";
 import { EditorWrapper } from "../components/EditorWrapper";
@@ -64,7 +64,7 @@ export default function RootLayout({
       </head>
       <body data-typo="c" className={`${figtree.variable} ${redHatMono.variable} ${manrope.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} ${sora.variable} antialiased`}>
         <EditorWrapper>
-          <Header />
+          <ClientHeader />
           <MainWrapper>
             {children}
           </MainWrapper>

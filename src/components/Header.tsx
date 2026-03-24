@@ -151,17 +151,17 @@ const Header = () => {
           {/* ── Nav centre + Téléphone ── */}
           <motion.div
             variants={{ hidden: { y: -12, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-            className="hidden xl:flex flex-1 items-center justify-center gap-4 pointer-events-auto"
+            className="hidden xl:flex flex-1 items-center justify-center gap-2 2xl:gap-4 pointer-events-auto"
           >
             <NavigationMenuDemo />
             <a
               href="tel:+33143911771"
-              className="flex items-center gap-2 rounded-full border border-[#000B58]/20 px-4 py-2 text-[#000B58] hover:border-[#000B58]/40 transition-colors no-underline shrink-0 h-10"
+              className="flex items-center gap-1.5 2xl:gap-2 rounded-full border border-[#000B58]/20 px-3 2xl:px-4 py-1.5 2xl:py-2 text-[#000B58] hover:border-[#000B58]/40 transition-colors no-underline shrink-0"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" />
               </svg>
-              <span className="text-base font-bold tracking-wide">01 43 91 17 71</span>
+              <span className="text-sm 2xl:text-base font-bold tracking-wide">01 43 91 17 71</span>
             </a>
           </motion.div>
 
@@ -171,7 +171,7 @@ const Header = () => {
             className="hidden xl:flex items-center shrink-0"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button asChild className="bg-[#000B58] text-white hover:bg-[#000B58]/90 border-2 border-[#D4A017] font-black tracking-wider text-sm px-6 py-2 shadow-lg">
+              <Button asChild className="bg-[#000B58] text-white hover:bg-[#000B58]/90 border-2 border-[#D4A017] font-black tracking-wider text-xs 2xl:text-sm px-4 2xl:px-6 py-1.5 2xl:py-2 shadow-lg">
                 <Link href="/simulateur">DEVIS 3D</Link>
               </Button>
             </motion.div>
@@ -257,7 +257,9 @@ const Header = () => {
               <Link href="/#realisations" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Réalisations
               </Link>
-
+              <Link href="/apropos" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
+                À propos
+              </Link>
               <Link href="/contact" className="text-[#000B58] hover:text-[#000B58]/70 transition-colors font-bold uppercase text-[15px] tracking-wide">
                 Contact
               </Link>
@@ -283,16 +285,16 @@ function NavigationMenuDemo() {
     { label: 'Accueil', href: '/' },
     { label: 'Solutions', href: '/solutions' },
     { label: 'Réalisations', href: '/#realisations' },
-
+    { label: 'À propos', href: '/apropos' },
     { label: 'Contact', href: '/contact' },
   ] as const;
 
   return (
     <NavigationMenu>
-      <NavigationMenuList className="flex-wrap gap-2">
+      <NavigationMenuList className="flex-wrap gap-1 xl:gap-2">
         {navLinks.map((item) => (
           <NavigationMenuItem key={item.href}>
-            <NavigationMenuLink asChild className={`${navigationMenuTriggerStyle()} !bg-transparent`}>
+            <NavigationMenuLink asChild className={`${navigationMenuTriggerStyle()} !bg-transparent text-sm 2xl:text-base px-2 2xl:px-3`}>
               <Link href={item.href}>{item.label}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
